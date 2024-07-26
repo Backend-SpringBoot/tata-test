@@ -9,7 +9,6 @@ import tata.test.dataaccess.entities.MovimientosEntity;
 import tata.test.dataaccess.mappers.MovimientosMapper;
 import tata.test.dataaccess.repository.MovimientosJpaRepository;
 import tata.test.domain.application.ports.output.repository.movimientos.command.MovimientosCommandRepository;
-import tata.test.enumeration.MovmentsEnum;
 import tata.test.exception.MovimientosException;
 import tata.test.record.request.MovimientosRequestRecord;
 import tata.test.record.response.MovimientosResponseRecord;
@@ -35,13 +34,13 @@ public class MovimientosCommandRepositoryImpl implements MovimientosCommandRepos
     }
     if (entity.getFechMovimiento() == null) {
       entity.setFechMovimiento(LocalDateTime.now());
-      if ("Retiro".equals(MovmentsEnum.Retiro)) {
+      if (movimientosRequestRecord.tipoMovimiento().equals("Retiro")) {
         if (entity.getSaldo() == 0) {
           new MovimientosException("Saldo no disponible");
         } else {
           entity.setSaldo(entity.getSaldo() - movimientosRequestRecord.valor());
         }
-      } else if ("Deposito".equals(MovmentsEnum.Deposito)) {
+      } else if (movimientosRequestRecord.tipoMovimiento().equals("Deposito")) {
         entity.setSaldo(entity.getSaldo() + movimientosRequestRecord.valor());
       }
 

@@ -1,0 +1,5 @@
+"estado","id","idPersonaCrea","idPersonaModifica","saldo","valor","fechMovimiento","fechaCrea","fechaModifica","ipCrea","ipModifica","tipoMovimiento","equipoCrea","equipoModifica","motivoModifica"
+A,1,2,2,5000,1000,"2024-07-26 14:30:00","2024-07-26 12:07:05.053572","2024-07-26 12:07:05.053572",ipcrea,ipmodifica,Ingreso,equipoCrea,equipoModifica,CREAR_TAREA_INICIAL
+A,2,2,2,5000,1000,"2024-07-26 14:30:00","2024-07-26 12:10:41.956561","2024-07-26 12:10:41.956561",ipcrea,ipmodifica,Deposito,equipoCrea,equipoModifica,CREAR_TAREA_INICIAL
+A,3,2,2,5000,10,"2024-07-26 14:30:00","2024-07-26 12:15:30.597800","2024-07-26 12:15:30.597800",ipcrea,ipmodifica,Deposito,equipoCrea,equipoModifica,CREAR_TAREA_INICIAL
+A,4,2,2,10,10,"2024-07-26 14:30:00","2024-07-26 12:21:29.567173","2024-07-26 12:21:29.567173",ipcrea,ipmodifica,Deposito,equipoCrea,equipoModifica,CREAR_TAREA_INICIAL
