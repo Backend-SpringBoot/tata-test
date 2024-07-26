@@ -1,0 +1,82 @@
+#Constantes
+server:
+  port: 8070
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8061/eureka/
+
+logging:
+  level:
+    org.hibernate.SQL: INFO
+    org.hibernate.type.descriptor.sql: INFO
+    org.springframework.data: INFO
+    org.springframework: INFO
+    tata.test: INFO
+    net.ttddyy.dsproxy.listener: INFO
+    root: INFO
+    feign: INFO
+
+spring:
+  output:
+    ansi:
+      enabled: always
+
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+
+      globalcors:
+        corsConfigurations:
+          "[/**]":
+            allowedOrigins:
+              - http://localhost/*
+              - http://localhost
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders:              
+              - Origin
+              - Content-Type
+              - Accept
+              - X-Requested-With
+              - X-Api-Key
+              - X-XSRF-TOKEN
+              - Authorization
+              - Access-Control-Max-Age
+              - Access-Control-Allow-Origin
+              - Access-Control-Allow-Headers
+              - cross-origin-opener-policy
+              - Access-Control-Allow-Methods
+            allowCredentials: true
+            maxAge: 3600
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: 'gateway,routes'
+  tracing:
+    sampling:
+      probability: 1.0
+
+springdoc:
+  enable-native-support: true
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
+    path: /swagger-ui.html
+    config-url: /v3/api-docs/swagger-config
+    urls:
+      - url: /v3/api-docs
+        name: API Gateway Service
+        primaryName: API Gateway Service
+      - url: /TEST-TATA-SERVICE/api/personal/v3/api-docs
+        name: Test tata Service

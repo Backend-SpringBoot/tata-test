@@ -1,0 +1,103 @@
+---
+server:
+  port: 8096
+  servlet:
+    context-path: /api/tata-test
+application:
+  title: BASE
+  version: 1.0.0-SNAPSHOT
+
+spring:
+  graphql:
+    graphiql:
+      enabled: true
+  web:
+    resources:
+      cache:
+        cachecontrol:
+          max-age: 24h
+  main:
+    lazy-initialization: true
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration
+  output:
+    ansi:
+      enabled: always
+  datasource:
+    url: ${TATA_TEST_URL}
+    username: ${TATA_TEST_USER}
+    password: ${TATA_TEST_PASSWD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    database: MYSQL
+    open-in-view: false
+    show-sql: false
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
+    properties:
+      hibernate:
+        format_sql: true
+        default_schema: Notarial
+        globally_quoted_identifiers: true
+        dialect: org.hibernate.dialect.MySQLDialect
+      org:
+        hibernate:
+          envers:
+            store_data_at_delete: true
+            default_schema: AUD
+            audit_table_suffix: _AUD
+    defer-datasource-initialization: false
+  sql:
+    init:
+      platform: MYSQL
+      mode: always
+  hikari:
+    minimumIdle: 1
+    maximumPoolSize: 1
+    idleTimeout: 30000
+    maxLifetime: 1800000
+    connectionTimeout: 80000
+  jackson:
+    serialization:
+      FAIL_ON_EMPTY_BEANS: false
+  messages:
+    basename: i18n/errors,i18n/problems
+    use-code-as-default-message: true
+    mvc:
+      throw-exception-if-no-handler-found: true
+problem:
+  enabled: true
+  cause-chains-enabled: true
+  jackson-module-enabled: true
+  dao-advice-enabled: true
+  security-advice-enabled: true
+  debug-enabled: true
+  stacktrace-enabled: true
+eureka:
+  client:
+    enabled: false
+logging:
+  level:
+    root: INFO
+    tata-test: INFO
+    org.springframework: INFO
+    net.ttddyy.dsproxy.listener: DEBUG
+    org.springframework.context.i18n: INFO
+management:
+  tracing:
+    sampling:
+      probability: 1
+openapi:
+  service:
+    title: test-tata-service
+    version: 1.0.0
+    url: http://localhot:8060
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html

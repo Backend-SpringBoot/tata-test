@@ -1,0 +1,37 @@
+stages:
+  - COMPILE_SEND_TO_SONAR
+  - CREATE_DOCKER_IMAGE
+  - SEND_TO_REGISTRY
+
+variables:
+  SONARQUBE_HOME: "http://10.1.22.165:9000"
+  SONARQUBE_TOKEN: sqa_3ba71385f32aeb51a8957689ea3fdf9e9b2d7d82
+
+sonar-sonar:
+  stage: COMPILE_SEND_TO_SONAR
+  script:
+    - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.scm.disabled=True -Dmaven.test.failure.ignore=true -Dsonar.host.url=$SONARQUBE_HOME  -Dsonar.token=$SONARQUBE_TOKEN -Dsonar.sourceEncoding=UTF-8
+  allow_failure: false
+  tags:
+    - runner
+
+create_docker_image:
+  stage: CREATE_DOCKER_IMAGE
+  script:
+    - mvn package -P generar-imagen-docker
+  allow_failure: false
+  dependencies:
+    - sonar-sonar
+  tags:
+    - runner
+
+send-to-registry:
+  stage: SEND_TO_REGISTRY
+  script:
+    - docker tag  tata.test.gateway.server/test-tata-gateway-server:1.0.0 10.1.22.164:5000/tata.test/tata-test-gateway-server:1.0.0
+    - docker push 10.1.22.164:5000/tata.test/test-tata-gateway-server:1.0.0
+  allow_failure: true
+  dependencies:
+    - sonar-sonar
+  tags:
+    - runner

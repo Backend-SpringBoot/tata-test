@@ -1,0 +1,31 @@
+stages:
+  - COMPILE_SEND_TO_SONAR
+  - CREATE_DOCKER_IMAGE
+  - SEND_TO_REGISTRY
+
+sonar-sonar:
+  stage: COMPILE_SEND_TO_SONAR
+  script:
+    - mvn clean install
+    #- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.scm.disabled=True -Dmaven.test.failure.ignore=true -Dsonar.host.url=$SONARQUBE_HOME  -Dsonar.token=$SONARQUBE_TOKEN -Dsonar.sourceEncoding=UTF-8
+  allow_failure: false
+  tags:
+    - runner
+
+create_docker_image:
+  stage: CREATE_DOCKER_IMAGE
+  script:
+    - mvn package -P generar-imagen-docker
+  allow_failure: false
+  dependencies:
+    - sonar-sonar
+  tags:
+    - runner
+
+send-to-registry:
+  stage: SEND_TO_REGISTRY
+  allow_failure: false
+  dependencies:
+    - create_docker_image
+  tags:
+    - runner

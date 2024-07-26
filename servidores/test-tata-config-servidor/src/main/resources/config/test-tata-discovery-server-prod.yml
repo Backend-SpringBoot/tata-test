@@ -1,0 +1,34 @@
+server:
+  port: 8061
+
+eureka:
+  instance:
+    hostname: localhost
+
+  client:
+    registerWithEurekaa: false
+    fetchRegistry: false
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+  case-sensitive-service-ids: false
+
+spring:
+  output:
+    ansi:
+      enabled: always
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+
+logging:
+  level:
+    org.hibernate.SQL: INFO
+    org.hibernate.type.descriptor.sql: INFO
+    org.springframework.data: INFO
+    org.springframework: INFO
+    tata.test: INFO
+    net.ttddyy.dsproxy.listener: INFO
+    root: INFO
+    feign: INFO

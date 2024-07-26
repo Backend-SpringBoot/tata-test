@@ -1,0 +1,339 @@
+{
+	"info": {
+		"_postman_id": "051b8d30-331d-4441-8e79-da600e506c90",
+		"name": "New Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7815939",
+		"_collection_link": "https://grey-spaceship-142324.postman.co/workspace/Judicatura~f7e0526c-e4a9-4e09-9be1-94a9fd4a9c37/collection/7815939-051b8d30-331d-4441-8e79-da600e506c90?action=share&source=collection_link&creator=7815939"
+	},
+	"item": [
+		{
+			"name": "persona",
+			"item": [
+				{
+					"name": "get persona",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8096/api/tata-test/query/persona/5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8096",
+							"path": [
+								"api",
+								"tata-test",
+								"query",
+								"persona",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get personas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8096/api/tata-test/query/persona/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8096",
+							"path": [
+								"api",
+								"tata-test",
+								"query",
+								"persona",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\":\"Juan\",\r\n    \"genero\":\"Masculino\",\r\n    \"edad\":22,\r\n    \"identificacion\":\"1203434343\",\r\n    \"direccion\":\"Quito\",\r\n    \"estado\":\"A\",\r\n    \"telefono\":\"0932343456\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8096/api/tata-test/command/persona",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8096",
+							"path": [
+								"api",
+								"tata-test",
+								"command",
+								"persona"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "cliente",
+			"item": [
+				{
+					"name": "get cliente",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8096/api/tata-test/query/cliente/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8096",
+							"path": [
+								"api",
+								"tata-test",
+								"query",
+								"cliente",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get clientes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8096/api/tata-test/query/persona/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8096",
+							"path": [
+								"api",
+								"tata-test",
+								"query",
+								"persona",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\":\"Juan\",\r\n    \"genero\":\"Masculino\",\r\n    \"edad\":22,\r\n    \"identificacion\":\"1203434343\",\r\n    \"direccion\":\"Quito\",\r\n    \"estado\":\"A\",\r\n    \"telefono\":\"0932343456\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8096/api/tata-test/command/client",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8096",
+							"path": [
+								"api",
+								"tata-test",
+								"command",
+								"client"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "cuentas",
+			"item": [
+				{
+					"name": "get cuenta",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8096/api/tata-test/query/cuenta/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8096",
+							"path": [
+								"api",
+								"tata-test",
+								"query",
+								"cuenta",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get cuentas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8096/api/tata-test/query/cuenta/accounts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8096",
+							"path": [
+								"api",
+								"tata-test",
+								"query",
+								"cuenta",
+								"accounts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\":\"Juan\",\r\n    \"genero\":\"Masculino\",\r\n    \"edad\":22,\r\n    \"identificacion\":\"1203434343\",\r\n    \"direccion\":\"Quito\",\r\n    \"estado\":\"A\",\r\n    \"telefono\":\"0932343456\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8096/api/tata-test/command/cuenta",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8096",
+							"path": [
+								"api",
+								"tata-test",
+								"command",
+								"cuenta"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "movimientos",
+			"item": [
+				{
+					"name": "get movimiento",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8096/api/tata-test/query/cuenta/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8096",
+							"path": [
+								"api",
+								"tata-test",
+								"query",
+								"cuenta",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get movimientos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8096/api/tata-test/query/cuenta/accounts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8096",
+							"path": [
+								"api",
+								"tata-test",
+								"query",
+								"cuenta",
+								"accounts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"fechMovimiento\": \"2024-07-26T14:30:00\",\r\n  \"tipoMovimiento\": \"Deposito\",\r\n  \"valor\": 10\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8096/api/tata-test/command/movimientos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8096",
+							"path": [
+								"api",
+								"tata-test",
+								"command",
+								"movimientos"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

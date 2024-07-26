@@ -1,0 +1,23 @@
+server:
+  port: 8088
+
+spring:
+  application:
+    name: test-tata-config-server
+  profiles:
+    active: native
+
+logging:
+  level:
+    org.hibernate.SQL: INFO
+    org.hibernate.type.descriptor.sql: INFO
+    org.springframework.data: INFO
+    org.springframework: INFO
+    tata.test: INFO
+    net.ttddyy.dsproxy.listener: DEBUG
+    root: INFO
+
+management:
+  endpoint:
+    health:
+      show-components: always

@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: test-tata-service
+  config:
+    import: optional:configserver:http://${CJ_PES_IP_SERVER}:8088
