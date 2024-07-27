@@ -4,13 +4,12 @@ server:
   servlet:
     context-path: /api/tata-test
 application:
-  title: BASE
+  title: tata-test-service
   version: 1.0.0-SNAPSHOT
 
 spring:
-  graphql:
-    graphiql:
-      enabled: true
+  application:
+    name: test-tata-service
   web:
     resources:
       cache:
@@ -82,7 +81,8 @@ problem:
   stacktrace-enabled: true
 eureka:
   client:
-    serviceUrl:
+    enabled: true
+    service-url:
       defaultZone: http://localhost:8061/eureka/
 logging:
   level:

@@ -4,7 +4,7 @@ server:
   servlet:
     context-path: /api/tata-test
 application:
-  title: BASE
+  title: tata-test-service
   version: 1.0.0-SNAPSHOT
 
 spring:
@@ -79,7 +79,8 @@ problem:
   stacktrace-enabled: true
 eureka:
   client:
-    enabled: false
+    service-url:
+      defaultZone: http://localhost:8061/eureka/
 logging:
   level:
     root: INFO
