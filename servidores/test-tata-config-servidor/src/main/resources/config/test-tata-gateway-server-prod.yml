@@ -27,11 +27,11 @@ spring:
     gateway:
       routes:
         - id: test-tata-service
-          uri: http://192.168.68.105:8096  # IP directa del servicio
+          uri: http://192.168.68.105:8096
           predicates:
-            - Path=/TEST-TATA-SERVICE/**  # ruta base para el servicio
+            - Path=/TEST-TATA-SERVICE/**
           filters:
-            - StripPrefix=1  # elimina el prefijo del path
+            - StripPrefix=1
 
 
       discovery:
