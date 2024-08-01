@@ -1,11 +1,14 @@
 package tata.test.dataaccess.entities;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -33,5 +36,8 @@ public class ClienteEntity extends PersonaEntity {
   @Size(max = 25, message = "{Tamaño maximo de 25 ")
   @Column(name = "contrasenia", nullable = false)
   private String contrasenia;
+
+  @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<CuentaEntity> cuentas;
 
 }

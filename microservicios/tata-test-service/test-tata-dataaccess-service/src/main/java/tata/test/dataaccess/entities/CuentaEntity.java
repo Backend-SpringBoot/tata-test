@@ -3,6 +3,9 @@ package tata.test.dataaccess.entities;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -46,5 +49,9 @@ public class CuentaEntity extends AbstractEntity<Integer, Integer> {
   @NotNull(message = "Saldo inicial no debe ser nulo")
   @PositiveOrZero(message = "Saldo inicial debe ser positivo o cero")
   private Integer saldoInicial;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "identificacion", nullable = false)
+  private ClienteEntity cliente;
 
 }
