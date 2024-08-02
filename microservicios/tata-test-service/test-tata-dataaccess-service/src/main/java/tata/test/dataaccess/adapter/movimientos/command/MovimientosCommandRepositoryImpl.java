@@ -70,11 +70,15 @@ public class MovimientosCommandRepositoryImpl implements MovimientosCommandRepos
     }
 
     if (movimientosRequestRecord.tipoMovimiento().equals("Retiro")
-        && movimientosRequestRecord.saldoInicial() > movimientosRequestRecord.movimiento()) {
+        && movimientosRequestRecord.saldoInicial() >= movimientosRequestRecord.movimiento()) {
       entity.setSaldoDisponible(
           movimientosRequestRecord.saldoInicial() - movimientosRequestRecord.movimiento());
       entity.setCiente(cliente.getNombre());
       entity.setFechMovimiento(LocalDateTime.now());
+    } else {
+      return new ResponseEntity<>(CreateException(
+          "No existe saldo suficiente", null),
+          HttpStatus.OK);
     }
 
     if (movimientosRequestRecord.tipoMovimiento().equals("Deposito")) {

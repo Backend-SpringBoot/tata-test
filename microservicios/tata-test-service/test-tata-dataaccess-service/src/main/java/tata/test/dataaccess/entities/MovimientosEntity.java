@@ -7,6 +7,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
 import lombok.Getter;
@@ -47,7 +48,7 @@ public class MovimientosEntity extends AbstractEntity<Integer, Integer> {
 
   @Column(name = "saldoDisponible", nullable = false)
   @NotNull(message = "Saldo disponible no debe ser nulo")
-  @Positive(message = "Saldo disponible debe ser positivo")
+  @PositiveOrZero(message = "Saldo disponible debe ser positivo")
   private Integer saldoDisponible;
 
   @NotBlank(message = "{Identificación no debe estar en blanco")
