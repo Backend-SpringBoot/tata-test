@@ -35,7 +35,7 @@ public interface MovimientosQueryRestController {
   @GetMapping("/{id}")
   @ResponseStatus(HttpStatus.CREATED)
   @Operation(summary = "Obtiene un movimiento")
-  MovimientosResponseRecord getTransaction(@PathVariable("id") Integer id);
+  ResponseEntity<ExceptionResponseRecord> getTransaction(@PathVariable("id") String id);
 
 
   @GetMapping("/transactions")

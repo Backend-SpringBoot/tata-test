@@ -8,7 +8,7 @@ import tata.test.record.response.MovimientosResponseRecord;
 
 public interface MovimientosQueryRepository {
 
-  MovimientosResponseRecord getTransaction(Integer id);
+  ResponseEntity<ExceptionResponseRecord> getTransaction(String id);
 
   List<MovimientosResponseRecord> getTransactions();
 

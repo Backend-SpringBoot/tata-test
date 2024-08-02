@@ -32,7 +32,7 @@ public class MovimientosQueryRestControllerImpl implements MovimientosQueryRestC
 
 
   @Override
-  public MovimientosResponseRecord getTransaction(Integer id) {
+  public ResponseEntity<ExceptionResponseRecord> getTransaction(String id) {
     return movimientosQueryService.getTransaction(id);
   }
 

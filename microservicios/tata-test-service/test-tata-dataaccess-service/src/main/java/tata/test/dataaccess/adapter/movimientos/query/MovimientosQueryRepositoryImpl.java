@@ -2,6 +2,7 @@ package tata.test.dataaccess.adapter.movimientos.query;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +12,6 @@ import tata.test.dataaccess.entities.MovimientosEntity;
 import tata.test.dataaccess.mappers.MovimientosMapper;
 import tata.test.dataaccess.repository.MovimientosJpaRepository;
 import tata.test.domain.application.ports.output.repository.movimientos.query.MovimientosQueryRepository;
-import tata.test.exception.MovimientosException;
 import tata.test.record.ExceptionResponseRecord;
 import tata.test.record.response.MovimientosResponseRecord;
 
@@ -23,15 +23,16 @@ public class MovimientosQueryRepositoryImpl implements MovimientosQueryRepositor
   private final MovimientosJpaRepository movimientosJpaRepository;
 
   @Override
-  public MovimientosResponseRecord getTransaction(Integer id) {
-    MovimientosEntity movimientosEntity =
+  public ResponseEntity<ExceptionResponseRecord> getTransaction(String id) {
+    Optional<MovimientosEntity> movimientoOptional =
         movimientosJpaRepository
-            .findById(id)
-            .orElseThrow(
-                () ->
-                    new MovimientosException(
-                        String.format("El movimiento con el id %d no existe.", id)));
-    return MovimientosMapper.INSTANCE.entityToResponseRecord(movimientosEntity);
+            .findByNumeroCuenta(id);
+    if (movimientoOptional.isEmpty()) {
+      return new ResponseEntity<>(CreateException("No existe registros", null), HttpStatus.OK);
+    }
+    MovimientosEntity movimiento = movimientoOptional.get();
+    MovimientosResponseRecord data = MovimientosMapper.INSTANCE.entityToResponseRecord(movimiento);
+    return new ResponseEntity<>(CreateException("Correcto !", data), HttpStatus.OK);
   }
 
   @Override

@@ -19,7 +19,7 @@ public class MovimientosQueryServiceImpl implements MovimientosQueryService {
   private final MovimientosQueryRepository movimientosQueryRepository;
 
   @Override
-  public MovimientosResponseRecord getTransaction(Integer id) {
+  public ResponseEntity<ExceptionResponseRecord> getTransaction(String id) {
     return movimientosQueryRepository.getTransaction(id);
   }
 
