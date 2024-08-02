@@ -2,9 +2,11 @@ package tata.test.proyecto.base.controller.cliente.query.impl;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import tata.test.domain.application.ports.input.cliente.query.ClienteQueryService;
 import tata.test.proyecto.base.controller.cliente.query.ClienteQueryRestController;
+import tata.test.record.ExceptionResponseRecord;
 import tata.test.record.response.ClienteResponseRecord;
 
 /**
@@ -28,7 +30,7 @@ public class ClienteQueryRestControllerImpl implements ClienteQueryRestControlle
   private final ClienteQueryService clienteQueryService;
 
   @Override
-  public ClienteResponseRecord getClient(Integer id) {
+  public ResponseEntity<ExceptionResponseRecord> getClient(String id) {
     return clienteQueryService.getClient(id);
   }
 

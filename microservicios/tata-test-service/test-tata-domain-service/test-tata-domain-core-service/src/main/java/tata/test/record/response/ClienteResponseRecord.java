@@ -25,8 +25,9 @@ import lombok.Builder;
 public record ClienteResponseRecord(
     Integer id,
     String contrasenia,
-    List<CuentaResponseRecord> cuentas,
+
     String nombre,
+    List<CuentaResponseRecord> cuentas,
     @JsonIgnore String estado,
     @JsonIgnore Integer idPersonaCrea,
     @JsonIgnore LocalDateTime fechaCrea,

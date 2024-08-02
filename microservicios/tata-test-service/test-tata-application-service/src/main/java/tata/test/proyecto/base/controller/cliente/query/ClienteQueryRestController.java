@@ -3,11 +3,13 @@ package tata.test.proyecto.base.controller.cliente.query;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import tata.test.record.ExceptionResponseRecord;
 import tata.test.record.response.ClienteResponseRecord;
 
 /**
@@ -31,7 +33,7 @@ public interface ClienteQueryRestController {
   @GetMapping("/{id}")
   @ResponseStatus(HttpStatus.CREATED)
   @Operation(summary = "Obtiene un cliente")
-  ClienteResponseRecord getClient(@PathVariable("id") Integer id);
+  ResponseEntity<ExceptionResponseRecord> getClient(@PathVariable("id") String id);
 
 
   @GetMapping("/clients")
