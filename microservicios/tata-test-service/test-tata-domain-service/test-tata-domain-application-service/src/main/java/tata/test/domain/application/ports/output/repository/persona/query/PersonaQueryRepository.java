@@ -1,11 +1,12 @@
 package tata.test.domain.application.ports.output.repository.persona.query;
 
 import java.util.List;
-import tata.test.record.response.PersonaResponseRecord;
+import org.springframework.http.ResponseEntity;
+import tata.test.record.ExceptionResponseRecord;
 
 public interface PersonaQueryRepository {
 
-  PersonaResponseRecord getUser(Integer id);
+  ResponseEntity<ExceptionResponseRecord> getUser(String id);
 
-  List<PersonaResponseRecord> getUsers();
+  ResponseEntity<List<ExceptionResponseRecord>> getUsers();
 }

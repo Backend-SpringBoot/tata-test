@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 import tata.test.domain.application.ports.input.movimientos.query.MovimientosQueryService;
 import tata.test.proyecto.base.controller.movimientos.query.MovimientosQueryRestController;
 import tata.test.record.ExceptionResponseRecord;
-import tata.test.record.response.MovimientosResponseRecord;
 
 /**
  * -- AQUI AÑADIR LA DESCRIPCION DE LA IMPLMENTACIÓN DE LA INTERFACE --.
@@ -37,7 +36,7 @@ public class MovimientosQueryRestControllerImpl implements MovimientosQueryRestC
   }
 
   @Override
-  public List<MovimientosResponseRecord> getTransactions() {
+  public ResponseEntity<List<ExceptionResponseRecord>> getTransactions() {
     return movimientosQueryService.getTransactions();
   }
 

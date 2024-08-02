@@ -2,10 +2,11 @@ package tata.test.proyecto.base.controller.persona.query.impl;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import tata.test.domain.application.ports.input.persona.query.PersonaQueryService;
 import tata.test.proyecto.base.controller.persona.query.PersonaQueryRestController;
-import tata.test.record.response.PersonaResponseRecord;
+import tata.test.record.ExceptionResponseRecord;
 
 /**
  * -- AQUI AÑADIR LA DESCRIPCION DE LA IMPLMENTACIÓN DE LA INTERFACE --.
@@ -28,12 +29,12 @@ public class PersonaQueryRestControllerImpl implements PersonaQueryRestControlle
   private final PersonaQueryService personaQueryService;
 
   @Override
-  public PersonaResponseRecord getUser(Integer id) {
+  public ResponseEntity<ExceptionResponseRecord> getUser(String id) {
     return personaQueryService.getUser(id);
   }
 
   @Override
-  public List<PersonaResponseRecord> getUsers() {
+  public ResponseEntity<List<ExceptionResponseRecord>> getUsers() {
     return personaQueryService.getUsers();
   }
 }

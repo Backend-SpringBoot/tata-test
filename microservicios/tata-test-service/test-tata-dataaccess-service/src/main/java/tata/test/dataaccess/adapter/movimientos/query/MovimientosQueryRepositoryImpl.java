@@ -36,11 +36,13 @@ public class MovimientosQueryRepositoryImpl implements MovimientosQueryRepositor
   }
 
   @Override
-  public List<MovimientosResponseRecord> getTransactions() {
-    List<MovimientosEntity> movimientosEntities =
+  public ResponseEntity<List<ExceptionResponseRecord>> getTransactions() {
+    List<MovimientosEntity> movimientoEntities =
         movimientosJpaRepository
             .findAll();
-    return MovimientosMapper.INSTANCE.entitiesToResponseRecords(movimientosEntities);
+    List<MovimientosResponseRecord> data = MovimientosMapper.INSTANCE.entitiesToResponseRecords(
+        movimientoEntities);
+    return new ResponseEntity<>(List.of(CreateException("Correcto", data)), HttpStatus.OK);
   }
 
   @Override

@@ -8,7 +8,7 @@ import tata.test.dataaccess.entities.PersonaEntity;
 public interface PersonaJpaRepository extends JpaRepository<PersonaEntity, Integer> {
 
   @Query("""
-      SELECT p FROM PersonaEntity p WHERE p.identificacion = :identificacion AND p.estado = 'A'""")
+      SELECT p FROM PersonaEntity p WHERE p.identificacion = :identificacion AND p.estado = 'True'""")
   Optional<PersonaEntity> findByIdentificacion(String identificacion);
 
 }

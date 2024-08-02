@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import tata.test.domain.application.ports.input.movimientos.query.MovimientosQueryService;
 import tata.test.domain.application.ports.output.repository.movimientos.query.MovimientosQueryRepository;
 import tata.test.record.ExceptionResponseRecord;
-import tata.test.record.response.MovimientosResponseRecord;
 
 @Service
 @RequiredArgsConstructor
@@ -24,7 +23,7 @@ public class MovimientosQueryServiceImpl implements MovimientosQueryService {
   }
 
   @Override
-  public List<MovimientosResponseRecord> getTransactions() {
+  public ResponseEntity<List<ExceptionResponseRecord>> getTransactions() {
     return movimientosQueryRepository.getTransactions();
   }
 

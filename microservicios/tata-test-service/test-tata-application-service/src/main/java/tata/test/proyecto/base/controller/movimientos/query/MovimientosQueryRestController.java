@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import tata.test.record.ExceptionResponseRecord;
-import tata.test.record.response.MovimientosResponseRecord;
 
 /**
  * -- AQUI AÑADIR LA DESCRIPCION DE LA INTERFACE --.
@@ -41,7 +40,7 @@ public interface MovimientosQueryRestController {
   @GetMapping("/transactions")
   @ResponseStatus(HttpStatus.CREATED)
   @Operation(summary = "Obtiene lista de movimientos")
-  List<MovimientosResponseRecord> getTransactions();
+  ResponseEntity<List<ExceptionResponseRecord>> getTransactions();
 
 
   @GetMapping("/transactions/byDate")
