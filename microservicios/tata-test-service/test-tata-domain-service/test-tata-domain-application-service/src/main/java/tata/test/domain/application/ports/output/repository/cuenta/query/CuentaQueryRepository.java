@@ -1,11 +1,12 @@
 package tata.test.domain.application.ports.output.repository.cuenta.query;
 
 import java.util.List;
-import tata.test.record.response.CuentaResponseRecord;
+import org.springframework.http.ResponseEntity;
+import tata.test.record.ExceptionResponseRecord;
 
 public interface CuentaQueryRepository {
 
-  CuentaResponseRecord getAccount(Integer id);
+  ResponseEntity<ExceptionResponseRecord> getAccount(String id);
 
-  List<CuentaResponseRecord> getAccounts();
+  ResponseEntity<List<ExceptionResponseRecord>> getAccounts();
 }
