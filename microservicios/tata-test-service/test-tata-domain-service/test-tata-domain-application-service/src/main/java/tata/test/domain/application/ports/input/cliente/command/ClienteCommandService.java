@@ -1,12 +1,13 @@
 package tata.test.domain.application.ports.input.cliente.command;
 
+import org.springframework.http.ResponseEntity;
+import tata.test.record.ExceptionResponseRecord;
 import tata.test.record.request.ClienteRequestRecord;
-import tata.test.record.response.ClienteResponseRecord;
 
 public interface ClienteCommandService {
 
-  ClienteResponseRecord createOrUpdate(ClienteRequestRecord clienteRequestRecord);
+  ResponseEntity<ExceptionResponseRecord> createOrUpdate(ClienteRequestRecord clienteRequestRecord);
 
-  void delete(Integer id);
+  ResponseEntity<ExceptionResponseRecord> delete(String identificacion);
 
 }

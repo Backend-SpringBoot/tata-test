@@ -1,12 +1,13 @@
 package tata.test.domain.application.services.cliente.command;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tata.test.domain.application.ports.input.cliente.command.ClienteCommandService;
 import tata.test.domain.application.ports.output.repository.cliente.command.ClienteCommandRepository;
+import tata.test.record.ExceptionResponseRecord;
 import tata.test.record.request.ClienteRequestRecord;
-import tata.test.record.response.ClienteResponseRecord;
 
 @Service
 @RequiredArgsConstructor
@@ -17,13 +18,14 @@ public class ClienteCommandServiceImpl implements ClienteCommandService {
 
   @Override
   @Transactional
-  public ClienteResponseRecord createOrUpdate(ClienteRequestRecord clienteRequestRecord) {
+  public ResponseEntity<ExceptionResponseRecord> createOrUpdate(
+      ClienteRequestRecord clienteRequestRecord) {
     return clienteCommandRepository.createOrUpdate(clienteRequestRecord);
   }
 
   @Override
   @Transactional
-  public void delete(Integer id) {
-    clienteCommandRepository.delete(id);
+  public ResponseEntity<ExceptionResponseRecord> delete(String identificacion) {
+    return clienteCommandRepository.delete(identificacion);
   }
 }

@@ -1,11 +1,12 @@
 package tata.test.proyecto.base.controller.cuenta.command.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import tata.test.domain.application.ports.input.cuenta.command.CuentaCommandService;
 import tata.test.proyecto.base.controller.cuenta.command.CuentaCommandRestController;
+import tata.test.record.ExceptionResponseRecord;
 import tata.test.record.request.CuentaRequestRecord;
-import tata.test.record.response.CuentaResponseRecord;
 
 /**
  * -- AQUI AÑADIR LA DESCRIPCION DE LA IMPLMENTACIÓN DE LA INTERFACE --.
@@ -29,12 +30,13 @@ public class CuentaCommandRestControllerImpl implements CuentaCommandRestControl
 
 
   @Override
-  public CuentaResponseRecord createorUpdate(CuentaRequestRecord cuentaRequestRecord) {
+  public ResponseEntity<ExceptionResponseRecord> createorUpdate(
+      CuentaRequestRecord cuentaRequestRecord) {
     return cuentaCommandService.createOrUpdate(cuentaRequestRecord);
   }
 
   @Override
-  public void delete(Integer id) {
-    cuentaCommandService.delete(id);
+  public ResponseEntity<ExceptionResponseRecord> delete(Integer id) {
+    return cuentaCommandService.delete(id);
   }
 }

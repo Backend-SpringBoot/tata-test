@@ -3,13 +3,16 @@ package tata.test.dataaccess.entities;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
+import java.util.concurrent.locks.StampedLock;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,7 +21,6 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import tata.test.dataaccess.entities.core.impl.AbstractEntity;
 
 @Getter
 @Setter
@@ -33,7 +35,7 @@ import tata.test.dataaccess.entities.core.impl.AbstractEntity;
 )
 @Inheritance(strategy = InheritanceType.JOINED)
 @EntityListeners(AuditingEntityListener.class)
-public class PersonaEntity extends AbstractEntity<Integer, Integer> {
+public class PersonaEntity {
 
   @NotBlank(message = "{Nombre no debe estar en blanco")
   @Size(max = 25, message = "{Tamaño maximo de 25 ")
@@ -50,6 +52,7 @@ public class PersonaEntity extends AbstractEntity<Integer, Integer> {
   @Positive(message = "Edad debe ser positivo")
   private Integer edad;
 
+  @Id
   @NotBlank(message = "{Identificación no debe estar en blanco")
   @Size(max = 25, message = "{Tamaño maximo de 25")
   @Column(name = "identificacion", nullable = false)
@@ -65,4 +68,15 @@ public class PersonaEntity extends AbstractEntity<Integer, Integer> {
   @Column(name = "telefono", nullable = false)
   private String telefono;
 
+  @NotBlank(message = "Estado no puede ser blanco")
+  @Size(max = 5, message = "Estado es True o False")
+  @Column(name = "estado", nullable = false, length = 5)
+  private String estado;
+
+  @Transient
+  private StampedLock lock = new StampedLock();
+
+  public StampedLock getLock() {
+    return lock;
+  }
 }

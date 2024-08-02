@@ -14,7 +14,6 @@ public interface ClienteMapper extends GenericMapper<ClienteEntity, ClienteRespo
 
   ClienteMapper INSTANCE = Mappers.getMapper(ClienteMapper.class);
 
-  @Mapping(target = "id", source = "id")
   @Mapping(target = "contrasenia", source = "contrasenia")
   @Mapping(target = "nombre", source = "nombre")
   @Mapping(target = "genero", source = "genero")
@@ -25,6 +24,9 @@ public interface ClienteMapper extends GenericMapper<ClienteEntity, ClienteRespo
   ClienteEntity requestRecordToEntity(ClienteRequestRecord clienteRequestRecord);
 
   @Override
+  @Mapping(target = "cuentas", source = "cuentas")
+  @Mapping(target = "contrasenia", source = "contrasenia")
+  @Mapping(target = "nombre", source = "nombre")
   ClienteResponseRecord entityToResponseRecord(ClienteEntity clienteEntity);
 
   List<ClienteResponseRecord> entitiesToResponseRecords(List<ClienteEntity> clienteEntities);

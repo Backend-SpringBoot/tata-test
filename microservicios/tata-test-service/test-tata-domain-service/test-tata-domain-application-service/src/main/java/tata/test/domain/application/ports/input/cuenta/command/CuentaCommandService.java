@@ -1,12 +1,13 @@
 package tata.test.domain.application.ports.input.cuenta.command;
 
+import org.springframework.http.ResponseEntity;
+import tata.test.record.ExceptionResponseRecord;
 import tata.test.record.request.CuentaRequestRecord;
-import tata.test.record.response.CuentaResponseRecord;
 
 public interface CuentaCommandService {
 
-  CuentaResponseRecord createOrUpdate(CuentaRequestRecord cuentaRequestRecord);
+  ResponseEntity<ExceptionResponseRecord> createOrUpdate(CuentaRequestRecord cuentaRequestRecord);
 
-  void delete(Integer id);
+  ResponseEntity<ExceptionResponseRecord> delete(Integer id);
 
 }

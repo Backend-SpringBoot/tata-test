@@ -24,7 +24,8 @@ public record CuentaRequestRecord(
     String numeroCuenta,
     String tipoCuenta,
     Integer saldoInicial,
-    String estado
+    String estado,
+    String cedulaCliente
 ) {
 
 }

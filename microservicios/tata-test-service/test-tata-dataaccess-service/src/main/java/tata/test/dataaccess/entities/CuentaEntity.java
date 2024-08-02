@@ -50,7 +50,7 @@ public class CuentaEntity extends AbstractEntity<Integer, Integer> {
   @PositiveOrZero(message = "Saldo inicial debe ser positivo o cero")
   private Integer saldoInicial;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "identificacion", nullable = false)
   private ClienteEntity cliente;
 

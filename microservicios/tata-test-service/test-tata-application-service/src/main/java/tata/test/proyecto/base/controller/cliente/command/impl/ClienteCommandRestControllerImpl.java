@@ -1,11 +1,12 @@
 package tata.test.proyecto.base.controller.cliente.command.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import tata.test.domain.application.ports.input.cliente.command.ClienteCommandService;
 import tata.test.proyecto.base.controller.cliente.command.ClienteCommandRestController;
+import tata.test.record.ExceptionResponseRecord;
 import tata.test.record.request.ClienteRequestRecord;
-import tata.test.record.response.ClienteResponseRecord;
 
 /**
  * -- AQUI AÑADIR LA DESCRIPCION DE LA IMPLMENTACIÓN DE LA INTERFACE --.
@@ -29,12 +30,13 @@ public class ClienteCommandRestControllerImpl implements ClienteCommandRestContr
 
 
   @Override
-  public ClienteResponseRecord createorUpdate(ClienteRequestRecord clienteRequestRecord) {
+  public ResponseEntity<ExceptionResponseRecord> createorUpdate(
+      ClienteRequestRecord clienteRequestRecord) {
     return clienteCommandService.createOrUpdate(clienteRequestRecord);
   }
 
   @Override
-  public void delete(Integer id) {
-    clienteCommandService.delete(id);
+  public ResponseEntity<ExceptionResponseRecord> delete(String identificacion) {
+    return clienteCommandService.delete(identificacion);
   }
 }

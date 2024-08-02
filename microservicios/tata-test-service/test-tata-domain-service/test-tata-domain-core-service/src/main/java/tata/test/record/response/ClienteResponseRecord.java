@@ -3,6 +3,7 @@ package tata.test.record.response;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.Builder;
 
 /**
@@ -24,6 +25,8 @@ import lombok.Builder;
 public record ClienteResponseRecord(
     Integer id,
     String contrasenia,
+    List<CuentaResponseRecord> cuentas,
+    String nombre,
     @JsonIgnore String estado,
     @JsonIgnore Integer idPersonaCrea,
     @JsonIgnore LocalDateTime fechaCrea,

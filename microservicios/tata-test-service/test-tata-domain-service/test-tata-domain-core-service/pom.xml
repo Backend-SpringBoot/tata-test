@@ -3,6 +3,12 @@
   xmlns="http://maven.apache.org/POM/4.0.0"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <artifactId>test-tata-domain-core-service</artifactId>
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+    </dependency>
+  </dependencies>
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <artifactId>test-tata-domain-service</artifactId>

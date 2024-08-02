@@ -1,7 +1,10 @@
 package tata.test.dataaccess.adapter.cliente.command;
 
+import java.util.Optional;
 import java.util.concurrent.locks.StampedLock;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tata.test.dataaccess.entities.ClienteEntity;
@@ -9,6 +12,7 @@ import tata.test.dataaccess.mappers.ClienteMapper;
 import tata.test.dataaccess.repository.ClienteJpaRepository;
 import tata.test.domain.application.ports.output.repository.cliente.command.ClienteCommandRepository;
 import tata.test.exception.ClienteException;
+import tata.test.record.ExceptionResponseRecord;
 import tata.test.record.request.ClienteRequestRecord;
 import tata.test.record.response.ClienteResponseRecord;
 
@@ -21,22 +25,46 @@ public class ClienteCommandRepositoryImpl implements ClienteCommandRepository {
 
   @Override
   @Transactional
-  public ClienteResponseRecord createOrUpdate(ClienteRequestRecord clienteRequestRecord) {
+  public ResponseEntity<ExceptionResponseRecord> createOrUpdate(
+      ClienteRequestRecord clienteRequestRecord) {
     ClienteEntity entity;
-
     if (clienteRequestRecord.id() != null) {
       entity = updateExistingCliente(clienteRequestRecord);
     } else {
-
       entity = ClienteMapper.INSTANCE.requestRecordToEntity(clienteRequestRecord);
+      Optional<ClienteEntity> clienteOptional = clienteJpaRepository.findByIdentificacion(
+          clienteRequestRecord.identificacion());
+
+      if (clienteOptional.isPresent()) {
+        ExceptionResponseRecord response = CreateException(
+            "Cliente ya registrado", null);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+      }
     }
-    return ClienteMapper.INSTANCE.entityToResponseRecord(clienteJpaRepository.save(entity));
+    ClienteResponseRecord saved = ClienteMapper.INSTANCE.entityToResponseRecord(
+        clienteJpaRepository.save(entity));
+    ExceptionResponseRecord response = CreateException(
+        "Cliente registrado exitosamente !", saved);
+    return new ResponseEntity<>(response, HttpStatus.OK);
   }
 
   @Override
   @Transactional
-  public void delete(Integer id) {
-    clienteJpaRepository.deleteById(id);
+  public ResponseEntity<ExceptionResponseRecord> delete(String identificacion) {
+    Optional<ClienteEntity> clienteOptional = clienteJpaRepository.findByIdentificacion(
+        identificacion);
+    if (clienteOptional.isEmpty()) {
+      ExceptionResponseRecord response = CreateException(
+          "No se encontró ningún registro", null);
+      return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+    ClienteEntity cliente = clienteOptional.get();
+    clienteJpaRepository.deleteByIdentificacion(cliente.getIdentificacion());
+    ExceptionResponseRecord response = CreateException(
+        "Cleinte : " + cliente.getNombre() + " eliminad@",
+        ClienteMapper.INSTANCE.entityToResponseRecord(cliente));
+    return new ResponseEntity<>(response, HttpStatus.OK);
+
   }
 
   private ClienteEntity updateExistingCliente(ClienteRequestRecord requestRecord) {
@@ -55,5 +83,13 @@ public class ClienteCommandRepositoryImpl implements ClienteCommandRepository {
       lock.unlockWrite(stamp);
     }
     return existingEntity;
+  }
+
+  private ExceptionResponseRecord CreateException(String message, Object o) {
+    return ExceptionResponseRecord.builder()
+        .httpStatus(HttpStatus.ACCEPTED)
+        .message(message)
+        .data(o)
+        .build();
   }
 }
