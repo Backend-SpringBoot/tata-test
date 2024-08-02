@@ -36,17 +36,32 @@ public class MovimientosEntity extends AbstractEntity<Integer, Integer> {
   @Column(name = "fechMovimiento", nullable = false)
   private LocalDateTime fechMovimiento;
 
-  @NotBlank(message = "{Tipo movimiento no debe estar en blanco")
+  @NotBlank(message = "{Tipo cuenta no debe estar en blanco")
   @Size(max = 25, message = "{Tamaño maximo de 25")
-  @Column(name = "tipoMovimiento", nullable = false)
-  private String tipoMovimiento;
+  @Column(name = "tipoCuenta", nullable = false)
+  private String tipoCuenta;
 
-  @Column(name = "valor", nullable = false)
-  @NotNull(message = "Valor no debe ser nulo")
-  private Integer valor;
+  @Column(name = "saldoInicial", nullable = false)
+  @NotNull(message = "Saldo inicial no puede ser nulo")
+  private Integer saldoInicial;
 
-  @Column(name = "saldo", nullable = false)
-  @NotNull(message = "Saldo no debe ser nulo")
-  @Positive(message = "Saldo debe ser positivo")
-  private Integer saldo;
+  @Column(name = "saldoDisponible", nullable = false)
+  @NotNull(message = "Saldo disponible no debe ser nulo")
+  @Positive(message = "Saldo disponible debe ser positivo")
+  private Integer saldoDisponible;
+
+  @NotBlank(message = "{Identificación no debe estar en blanco")
+  @Size(max = 25, message = "{Tamaño maximo de 25")
+  @Column(name = "cliente", nullable = false)
+  private String ciente;
+
+  @NotBlank(message = "{Número cuenta no debe estar en blanco")
+  @Size(max = 25, message = "{Tamaño maximo de 25 ")
+  @Column(name = "numeroCuenta", nullable = false)
+  private String numeroCuenta;
+
+  @Column(name = "movimiento", nullable = false)
+  @NotNull(message = "Movimiento disponible no debe ser nulo")
+  @Positive(message = "Movimiento disponible debe ser positivo")
+  private Integer movimiento;
 }

@@ -25,8 +25,8 @@ public interface ClienteMapper extends GenericMapper<ClienteEntity, ClienteRespo
 
   @Override
   @Mapping(target = "cuentas", source = "cuentas")
-  @Mapping(target = "contrasenia", source = "contrasenia")
   @Mapping(target = "nombre", source = "nombre")
+  @Mapping(target = "identificacion", source = "identificacion")
   ClienteResponseRecord entityToResponseRecord(ClienteEntity clienteEntity);
 
   List<ClienteResponseRecord> entitiesToResponseRecords(List<ClienteEntity> clienteEntities);

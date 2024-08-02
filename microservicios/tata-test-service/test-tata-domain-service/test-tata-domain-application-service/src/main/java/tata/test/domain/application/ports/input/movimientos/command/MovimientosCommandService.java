@@ -1,11 +1,13 @@
 package tata.test.domain.application.ports.input.movimientos.command;
 
+import org.springframework.http.ResponseEntity;
+import tata.test.record.ExceptionResponseRecord;
 import tata.test.record.request.MovimientosRequestRecord;
-import tata.test.record.response.MovimientosResponseRecord;
 
 public interface MovimientosCommandService {
 
-  MovimientosResponseRecord createOrUpdate(MovimientosRequestRecord movimientosRequestRecord);
+  ResponseEntity<ExceptionResponseRecord> createOrUpdate(
+      MovimientosRequestRecord movimientosRequestRecord);
 
   void delete(Integer id);
 

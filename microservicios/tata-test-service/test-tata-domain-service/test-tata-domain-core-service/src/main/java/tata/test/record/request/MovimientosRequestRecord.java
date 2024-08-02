@@ -1,7 +1,6 @@
 package tata.test.record.request;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import java.time.LocalDateTime;
 import lombok.Builder;
 
 /**
@@ -22,9 +21,13 @@ import lombok.Builder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record MovimientosRequestRecord(
     Integer id,
-    LocalDateTime fechMovimiento,
+    String numeroCuenta,
+    String tipoCuenta,
+    String estado,
     String tipoMovimiento,
-    Integer valor
+    Integer saldoInicial,
+    Integer movimiento,
+    String cedula
 ) {
 
 }

@@ -1,10 +1,13 @@
 package tata.test.proyecto.base.controller.movimientos.query.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import tata.test.domain.application.ports.input.movimientos.query.MovimientosQueryService;
 import tata.test.proyecto.base.controller.movimientos.query.MovimientosQueryRestController;
+import tata.test.record.ExceptionResponseRecord;
 import tata.test.record.response.MovimientosResponseRecord;
 
 /**
@@ -36,5 +39,11 @@ public class MovimientosQueryRestControllerImpl implements MovimientosQueryRestC
   @Override
   public List<MovimientosResponseRecord> getTransactions() {
     return movimientosQueryService.getTransactions();
+  }
+
+  @Override
+  public ResponseEntity<List<ExceptionResponseRecord>> getMovimientosPorRangoFechas(
+      LocalDateTime startDate, LocalDateTime endDate) {
+    return movimientosQueryService.getMovimientosPorRangoFechas(startDate, endDate);
   }
 }

@@ -1,9 +1,8 @@
 package tata.test.enumeration;
 
 public enum StateEnum {
-  ACTIVO("A"),
-  INCATIVO("I"),
-  ELIMINADO("X");
+  TRUE("TRUE"),
+  FALSE("FALSE");
 
   private final String state;
 

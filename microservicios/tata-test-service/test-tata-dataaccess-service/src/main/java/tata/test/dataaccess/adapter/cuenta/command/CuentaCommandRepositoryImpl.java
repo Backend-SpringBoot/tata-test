@@ -13,7 +13,6 @@ import tata.test.dataaccess.mappers.CuentaMapper;
 import tata.test.dataaccess.repository.ClienteJpaRepository;
 import tata.test.dataaccess.repository.CuentaJpaRepository;
 import tata.test.domain.application.ports.output.repository.cuenta.command.CuentaCommandRepository;
-import tata.test.exception.CuentaException;
 import tata.test.record.ExceptionResponseRecord;
 import tata.test.record.request.CuentaRequestRecord;
 import tata.test.record.response.CuentaResponseRecord;
@@ -31,31 +30,31 @@ public class CuentaCommandRepositoryImpl implements CuentaCommandRepository {
   public ResponseEntity<ExceptionResponseRecord> createOrUpdate(
       CuentaRequestRecord cuentaRequestRecord) {
     CuentaEntity entity;
+    Optional<CuentaEntity> cuentaOptional;
+    Optional<ClienteEntity> clienteOptional;
     ClienteEntity cliente = null;
-    if (cuentaRequestRecord.id() != null) {
+
+    cuentaOptional = cuentaJpaRepository.findByNumeroCuenta(
+        cuentaRequestRecord.numeroCuenta());
+
+    clienteOptional = clienteJpaRepository.findByIdentificacion(
+        cuentaRequestRecord.cedulaCliente());
+    if (clienteOptional.isEmpty()) {
+      ExceptionResponseRecord response = CreateException("Usuario no registrado", null);
+      return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+    }
+
+    cliente = clienteOptional.get();
+
+    if (cuentaOptional.isPresent()) {
       entity = updateExistingCuenta(cuentaRequestRecord);
     } else {
 
-      Optional<ClienteEntity> clienteOptional = clienteJpaRepository.findByIdentificacion(
-          cuentaRequestRecord.cedulaCliente());
-      if (clienteOptional.isEmpty()) {
-        ExceptionResponseRecord response = CreateException("Usuario no registrado", null);
-        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
-      }
-      cliente = clienteOptional.get();
       entity = CuentaMapper.INSTANCE.requestRecordToEntity(cuentaRequestRecord);
       entity.setCliente(cliente);
 
-      Optional<CuentaEntity> cuentaOptional = cuentaJpaRepository.findByTipoCuenta(
-          cuentaRequestRecord.tipoCuenta());
-
-      if (cuentaOptional.isPresent()) {
-        ExceptionResponseRecord response = CreateException(
-            "El usuario: " + cliente.getNombre() + " ya tiene cuenta: "
-                + cuentaRequestRecord.tipoCuenta(), null);
-        return new ResponseEntity<>(response, HttpStatus.OK);
-      }
     }
+
     CuentaResponseRecord saved = CuentaMapper.INSTANCE.entityToResponseRecord(
         cuentaJpaRepository.save(entity));
     assert cliente != null;
@@ -91,11 +90,10 @@ public class CuentaCommandRepositoryImpl implements CuentaCommandRepository {
   }
 
   private CuentaEntity updateExistingCuenta(CuentaRequestRecord requestRecord) {
-    CuentaEntity existingEntity =
+    Optional<CuentaEntity> cuentaOptional =
         cuentaJpaRepository
-            .findById(requestRecord.id())
-            .orElseThrow(() -> new CuentaException("Cuenta no encontrado"));
-
+            .findByNumeroCuenta(requestRecord.numeroCuenta());
+    CuentaEntity existingEntity = cuentaOptional.get();
     final StampedLock lock = existingEntity.getLock();
     long stamp = lock.writeLock();
     try {

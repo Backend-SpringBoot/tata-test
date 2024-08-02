@@ -37,7 +37,8 @@ public class ClienteCommandRepositoryImpl implements ClienteCommandRepository {
 
       if (clienteOptional.isPresent()) {
         ExceptionResponseRecord response = CreateException(
-            "Cliente ya registrado", null);
+            "Cliente con cédula :" + clienteRequestRecord.identificacion() + " ya registrado",
+            null);
         return new ResponseEntity<>(response, HttpStatus.OK);
       }
     }

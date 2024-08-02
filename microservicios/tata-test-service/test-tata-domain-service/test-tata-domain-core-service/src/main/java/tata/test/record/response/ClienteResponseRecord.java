@@ -24,9 +24,9 @@ import lombok.Builder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record ClienteResponseRecord(
     Integer id,
-    String contrasenia,
 
     String nombre,
+    String identificacion,
     List<CuentaResponseRecord> cuentas,
     @JsonIgnore String estado,
     @JsonIgnore Integer idPersonaCrea,

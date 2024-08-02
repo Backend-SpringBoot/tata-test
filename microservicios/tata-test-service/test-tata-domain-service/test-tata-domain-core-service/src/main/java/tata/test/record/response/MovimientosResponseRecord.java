@@ -23,10 +23,13 @@ import lombok.Builder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record MovimientosResponseRecord(
     Integer id,
-    LocalDateTime fecha,
-    String tipoMovimiento,
-    Integer valor,
-    Integer saldo,
+    LocalDateTime fechMovimiento,
+    String tipoCuenta,
+    Integer saldoInicial,
+    Integer saldoDisponible,
+    String cliente,
+    String numeroCuenta,
+    String movimiento,
     @JsonIgnore String estado,
     @JsonIgnore Integer idPersonaCrea,
     @JsonIgnore LocalDateTime fechaCrea,

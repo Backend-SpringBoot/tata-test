@@ -2,6 +2,7 @@ package tata.test.dataaccess.mappers;
 
 import java.util.List;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 import tata.test.dataaccess.entities.MovimientosEntity;
 import tata.test.dataaccess.mappers.core.GenericMapper;
@@ -17,8 +18,9 @@ public interface MovimientosMapper extends
   MovimientosEntity requestRecordToEntity(MovimientosRequestRecord movimientosRequestRecord);
 
   @Override
+  @Mapping(target = "cliente", source = "ciente")
   MovimientosResponseRecord entityToResponseRecord(MovimientosEntity movimientosEntity);
-
+  
   List<MovimientosResponseRecord> entitiesToResponseRecords(
       List<MovimientosEntity> movimientosEntities);
 }

@@ -47,8 +47,8 @@ public abstract class AbstractEntity<T, P> implements Entity<T>, Auditable<P> {
   private T id;
 
   @NotBlank(message = "{entity.estado.notBlank}")
-  @Size(max = 1, message = "{entity.estado.size}")
-  @Column(name = "estado", nullable = false, length = 1)
+  @Size(max = 5, message = "{entity.estado.size}")
+  @Column(name = "estado", nullable = false, length = 5)
   private String estado;
 
   @CreatedBy
@@ -214,7 +214,7 @@ public abstract class AbstractEntity<T, P> implements Entity<T>, Auditable<P> {
   @PrePersist
   protected void onPrePersist() {
     // Lógica a ejecutar antes de persistir la entidad por primera vez
-    setEstado(StateEnum.ACTIVO.getState());
+    setEstado(StateEnum.TRUE.getState());
     setIpCrea("ipcrea");
     setIpModifica("ipmodifica");
     setEquipoCrea("equipoCrea");
