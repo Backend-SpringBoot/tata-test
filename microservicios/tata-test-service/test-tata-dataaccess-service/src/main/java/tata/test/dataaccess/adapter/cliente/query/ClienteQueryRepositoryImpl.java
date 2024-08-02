@@ -36,11 +36,14 @@ public class ClienteQueryRepositoryImpl implements ClienteQueryRepository {
   }
 
   @Override
-  public List<ClienteResponseRecord> getCliets() {
+  public ResponseEntity<List<ExceptionResponseRecord>> getCliets() {
     List<ClienteEntity> clienteEntities =
         clienteJpaRepository
             .findAll();
-    return ClienteMapper.INSTANCE.entitiesToResponseRecords(clienteEntities);
+
+    List<ClienteResponseRecord> data = ClienteMapper.INSTANCE.entitiesToResponseRecords(
+        clienteEntities);
+    return new ResponseEntity<>(List.of(CreateException("Correcto", data)), HttpStatus.OK);
   }
 
   private ExceptionResponseRecord CreateException(String message, Object o) {

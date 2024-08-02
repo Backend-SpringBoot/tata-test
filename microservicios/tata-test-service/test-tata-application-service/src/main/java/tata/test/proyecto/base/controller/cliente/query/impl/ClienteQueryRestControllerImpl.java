@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 import tata.test.domain.application.ports.input.cliente.query.ClienteQueryService;
 import tata.test.proyecto.base.controller.cliente.query.ClienteQueryRestController;
 import tata.test.record.ExceptionResponseRecord;
-import tata.test.record.response.ClienteResponseRecord;
 
 /**
  * -- AQUI AÑADIR LA DESCRIPCION DE LA IMPLMENTACIÓN DE LA INTERFACE --.
@@ -35,7 +34,7 @@ public class ClienteQueryRestControllerImpl implements ClienteQueryRestControlle
   }
 
   @Override
-  public List<ClienteResponseRecord> getClients() {
+  public ResponseEntity<List<ExceptionResponseRecord>> getClients() {
     return clienteQueryService.getClients();
   }
 }

@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 import tata.test.domain.application.ports.input.cliente.query.ClienteQueryService;
 import tata.test.domain.application.ports.output.repository.cliente.query.ClienteQueryRepository;
 import tata.test.record.ExceptionResponseRecord;
-import tata.test.record.response.ClienteResponseRecord;
 
 @Service
 @RequiredArgsConstructor
@@ -23,7 +22,7 @@ public class ClienteQueryServiceImpl implements ClienteQueryService {
   }
 
   @Override
-  public List<ClienteResponseRecord> getClients() {
+  public ResponseEntity<List<ExceptionResponseRecord>> getClients() {
     return clienteQueryRepository.getCliets();
   }
 }

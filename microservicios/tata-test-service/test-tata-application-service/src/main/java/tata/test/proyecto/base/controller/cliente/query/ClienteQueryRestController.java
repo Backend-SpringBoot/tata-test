@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import tata.test.record.ExceptionResponseRecord;
-import tata.test.record.response.ClienteResponseRecord;
 
 /**
  * -- AQUI AÑADIR LA DESCRIPCION DE LA INTERFACE --.
@@ -39,5 +38,5 @@ public interface ClienteQueryRestController {
   @GetMapping("/clients")
   @ResponseStatus(HttpStatus.CREATED)
   @Operation(summary = "Obtiene lista de clientes")
-  List<ClienteResponseRecord> getClients();
+  ResponseEntity<List<ExceptionResponseRecord>> getClients();
 }
