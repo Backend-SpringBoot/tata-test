@@ -73,7 +73,7 @@
     <artifactId>spring-boot-starter-parent</artifactId>
     <groupId>org.springframework.boot</groupId>
     <relativePath/>
-    <version>3.2.4</version>
+    <version>3.2.6</version>
   </parent>
   <pluginRepositories>
     <pluginRepository>
@@ -112,7 +112,7 @@
                   </BP_JVM_JLINK_ARGS>
                   <BP_JVM_VERSION>${java.version}</BP_JVM_VERSION>
                 </env>
-                <name>${project.groupId}/${project.parent.artifactId}:${project.version}</name>
+                <name>${project.groupId}/${project.artifactId}:${project.version}</name>
               </image>
             </configuration>
             <executions>
@@ -133,7 +133,7 @@
   <properties>
     <java.version>21</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <spring-cloud.version>2023.0.1</spring-cloud.version>
+    <spring-cloud.version>2023.0.2</spring-cloud.version>
   </properties>
   <repositories>
     <repository>

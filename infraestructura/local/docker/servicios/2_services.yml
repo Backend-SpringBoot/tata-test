@@ -1,0 +1,17 @@
+services:
+  tata-servicio:
+    image: docker.io/tata-test/test-tata-container-service:1.0.0-SNAPSHOT
+    ports:
+      - "8180"
+    environment:
+      TATA_TEST_URL: ${TATA_TEST_URL}
+      TATA_TEST_USER: ${TATA_TEST_USER}
+      TATA_TEST_PASSWD: ${TATA_TEST_PASSWD}
+      LOGGING_LEVEL_ROOT: INFO
+    deploy:
+      mode: replicated
+      replicas: 1
+      endpoint_mode: vip
+    networks:
+      - ${GLOBAL_NETWORK:-services}
+  
