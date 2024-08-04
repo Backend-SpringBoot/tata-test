@@ -31,37 +31,25 @@ public class CuentaCommandRepositoryImpl implements CuentaCommandRepository {
   @Transactional
   public ResponseEntity<ExceptionResponseRecord> createOrUpdate(
       CuentaRequestRecord cuentaRequestRecord) {
-    CuentaEntity entity;
-    Optional<CuentaEntity> cuentaOptional;
-    Optional<ClienteEntity> clienteOptional;
-    ClienteEntity cliente;
-    final List<String> TIPO_TRANSACCIONES = Arrays.asList("Ahorros", "Corriente");
-    if (!isValidTransactionType(TIPO_TRANSACCIONES, cuentaRequestRecord.tipoCuenta())) {
-      return new ResponseEntity<>(CreateException(
-          "Tipo de transacción no sportada", null), HttpStatus.OK);
+    
+    if (!isValidTransactionType(getSupportedTransactionTypes(), cuentaRequestRecord.tipoCuenta())) {
+      return createErrorResponse("Tipo de transacción no soportada");
     }
-    cuentaOptional = cuentaJpaRepository.findByNumeroCuenta(
-        cuentaRequestRecord.numeroCuenta());
-    clienteOptional = clienteJpaRepository.findByIdentificacion(
+
+    Optional<ClienteEntity> clienteOptional = clienteJpaRepository.findByIdentificacion(
         cuentaRequestRecord.cedulaCliente());
     if (clienteOptional.isEmpty()) {
-      return new ResponseEntity<>(CreateException(
-          "Usuario no registrado", null), null);
+      return createErrorResponse("Usuario no registrado");
     }
-    cliente = clienteOptional.get();
-    if (cuentaOptional.isPresent()) {
-      entity = updateExistingCuenta(cuentaRequestRecord);
-    } else {
-      entity = CuentaMapper.INSTANCE.requestRecordToEntity(cuentaRequestRecord);
-      entity.setCliente(cliente);
-    }
+
+    ClienteEntity cliente = clienteOptional.get();
+    CuentaEntity entity = getCuentaEntity(cuentaRequestRecord, cliente);
+
     CuentaResponseRecord saved = CuentaMapper.INSTANCE.entityToResponseRecord(
         cuentaJpaRepository.save(entity));
-    assert cliente != null;
-    return new ResponseEntity<>(CreateException(
-        "Cuenta almacenada para el usuario: " + cliente.getNombre(), saved), HttpStatus.OK);
+    return createSuccessResponse("Cuenta almacenada para el usuario: " + cliente.getNombre(),
+        saved);
   }
-
 
   @Override
   @Transactional
@@ -107,7 +95,35 @@ public class CuentaCommandRepositoryImpl implements CuentaCommandRepository {
     return existingEntity;
   }
 
+  private ResponseEntity<ExceptionResponseRecord> createErrorResponse(String message) {
+    return new ResponseEntity<>(CreateException(message, null), HttpStatus.OK);
+  }
+
+  private ResponseEntity<ExceptionResponseRecord> createSuccessResponse(String message,
+      CuentaResponseRecord saved) {
+    return new ResponseEntity<>(CreateException(message, saved), HttpStatus.OK);
+  }
+
+  private CuentaEntity getCuentaEntity(CuentaRequestRecord cuentaRequestRecord,
+      ClienteEntity cliente) {
+    Optional<CuentaEntity> cuentaOptional = cuentaJpaRepository.findByNumeroCuenta(
+        cuentaRequestRecord.numeroCuenta());
+    return cuentaOptional.isPresent() ? updateExistingCuenta(cuentaRequestRecord)
+        : createNewCuenta(cuentaRequestRecord, cliente);
+  }
+
+  private CuentaEntity createNewCuenta(CuentaRequestRecord cuentaRequestRecord,
+      ClienteEntity cliente) {
+    CuentaEntity entity = CuentaMapper.INSTANCE.requestRecordToEntity(cuentaRequestRecord);
+    entity.setCliente(cliente);
+    return entity;
+  }
+
   public boolean isValidTransactionType(List<String> TIPO_TRANSACCIONES, String tipoCuenta) {
     return TIPO_TRANSACCIONES.contains(tipoCuenta);
+  }
+
+  private List<String> getSupportedTransactionTypes() {
+    return Arrays.asList("Ahorros", "Corriente");
   }
 }
