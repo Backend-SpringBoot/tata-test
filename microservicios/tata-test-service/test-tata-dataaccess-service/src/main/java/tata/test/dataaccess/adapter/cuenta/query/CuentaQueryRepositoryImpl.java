@@ -1,7 +1,6 @@
 package tata.test.dataaccess.adapter.cuenta.query;
 
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,26 +22,22 @@ public class CuentaQueryRepositoryImpl implements CuentaQueryRepository {
 
   @Override
   public ResponseEntity<ExceptionResponseRecord> getAccount(String id) {
-    Optional<CuentaEntity> cuentaOptional =
-        cuentaJpaRepository
-            .findByNumeroCuenta(id);
-    if (cuentaOptional.isEmpty()) {
-      return new ResponseEntity<>(CreateException("No existe registros", null), HttpStatus.OK);
-    }
-    CuentaEntity cliente = cuentaOptional.get();
-    CuentaResponseRecord data = CuentaMapper.INSTANCE.entityToResponseRecord(cliente);
-    return new ResponseEntity<>(CreateException("Correcto !", data), HttpStatus.OK);
+    return cuentaJpaRepository.findByNumeroCuenta(id)
+        .map(this::getCuentaResponse)
+        .orElseGet(() -> createErrorResponse("No se encontró ningún registro"));
   }
 
   @Override
   public ResponseEntity<List<ExceptionResponseRecord>> getAccounts() {
-    List<CuentaEntity> cuentaEntities =
-        cuentaJpaRepository
-            .findAll();
-
+    List<CuentaEntity> cuentaEntities = cuentaJpaRepository.findAll();
     List<CuentaResponseRecord> data = CuentaMapper.INSTANCE.entitiesToResponseRecords(
         cuentaEntities);
     return new ResponseEntity<>(List.of(CreateException("Correcto", data)), HttpStatus.OK);
+  }
+
+  private ResponseEntity<ExceptionResponseRecord> getCuentaResponse(CuentaEntity cuenta) {
+    CuentaResponseRecord data = CuentaMapper.INSTANCE.entityToResponseRecord(cuenta);
+    return createSuccessResponse("Correcto!", data);
   }
 
   private ExceptionResponseRecord CreateException(String message, Object o) {
@@ -51,5 +46,14 @@ public class CuentaQueryRepositoryImpl implements CuentaQueryRepository {
         .message(message)
         .data(o)
         .build();
+  }
+
+  private ResponseEntity<ExceptionResponseRecord> createErrorResponse(String message) {
+    return new ResponseEntity<>(CreateException(message, null), HttpStatus.OK);
+  }
+
+  private ResponseEntity<ExceptionResponseRecord> createSuccessResponse(String message,
+      CuentaResponseRecord data) {
+    return new ResponseEntity<>(CreateException(message, data), HttpStatus.OK);
   }
 }
