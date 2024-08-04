@@ -1,11 +1,12 @@
 package tata.test.domain.application.ports.output.repository.persona.commad;
 
+import org.springframework.http.ResponseEntity;
+import tata.test.record.ExceptionResponseRecord;
 import tata.test.record.request.PersonaRequestRecord;
-import tata.test.record.response.PersonaResponseRecord;
 
 public interface PersonaCommandRepository {
 
-  PersonaResponseRecord createOrUpdate(PersonaRequestRecord personaRequestRecord);
+  ResponseEntity<ExceptionResponseRecord> createOrUpdate(PersonaRequestRecord personaRequestRecord);
 
-  void delete(Integer id);
+  ResponseEntity<ExceptionResponseRecord> delete(String id);
 }

@@ -1,11 +1,12 @@
 package tata.test.proyecto.base.controller.persona.command.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import tata.test.domain.application.ports.input.persona.command.PersonaCommandService;
 import tata.test.proyecto.base.controller.persona.command.PersonaCommandRestController;
+import tata.test.record.ExceptionResponseRecord;
 import tata.test.record.request.PersonaRequestRecord;
-import tata.test.record.response.PersonaResponseRecord;
 
 /**
  * -- AQUI AÑADIR LA DESCRIPCION DE LA IMPLMENTACIÓN DE LA INTERFACE --.
@@ -28,12 +29,13 @@ public class PersonaCommandRestControllerImpl implements PersonaCommandRestContr
   private final PersonaCommandService personaCommandService;
 
   @Override
-  public PersonaResponseRecord createorUpdate(PersonaRequestRecord personaRequestRecord) {
+  public ResponseEntity<ExceptionResponseRecord> createorUpdate(
+      PersonaRequestRecord personaRequestRecord) {
     return personaCommandService.createOrUpdate(personaRequestRecord);
   }
 
   @Override
-  public void delete(Integer id) {
-    personaCommandService.delete(id);
+  public ResponseEntity<ExceptionResponseRecord> delete(String id) {
+    return personaCommandService.delete(id);
   }
 }

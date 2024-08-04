@@ -11,4 +11,6 @@ public interface PersonaJpaRepository extends JpaRepository<PersonaEntity, Integ
       SELECT p FROM PersonaEntity p WHERE p.identificacion = :identificacion AND p.estado = 'True'""")
   Optional<PersonaEntity> findByIdentificacion(String identificacion);
 
+  void deleteByIdentificacion(String id);
+
 }
