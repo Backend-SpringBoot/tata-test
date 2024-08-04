@@ -34,13 +34,13 @@ docker compose -f 0_common.yml -f 1_servers.yml up -d tata-gateway-server
 ```
 ### reiniciar servidores
 ```
-docker compose -f 0_common.yml -f 1_servers.yml tata-config-server
+docker compose -f 0_common.yml -f 1_servers.yml restart tata-config-server
 ```
 ```
-docker compose -f 0_common.yml -f 1_servers.yml tata-discovery-server
+docker compose -f 0_common.yml -f 1_servers.yml restart tata-discovery-server
 ```
 ```
-docker compose -f 0_common.yml -f 1_servers.yml tata-gateway-server
+docker compose -f 0_common.yml -f 1_servers.yml restart tata-gateway-server
 ```
 ### bajar servidores
 ```
@@ -55,7 +55,7 @@ docker compose -f 0_common.yml -f 2_services.yml up -d tata-servicio
 ```
 ### reiniciar servicios
 ```
-docker compose -f 0_common.yml -f 2_services.yml tata-servicio
+docker compose -f 0_common.yml -f 2_services.yml restart tata-servicio
 ```
 ### bajar servicio
 ```
