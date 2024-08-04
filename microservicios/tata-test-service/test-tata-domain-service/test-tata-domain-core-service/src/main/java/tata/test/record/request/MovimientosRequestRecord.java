@@ -25,8 +25,7 @@ public record MovimientosRequestRecord(
     String tipoCuenta,
     String estado,
     String tipoMovimiento,
-    Integer saldoInicial,
-    Integer movimiento,
+    double movimiento,
     String cedula
 ) {
 

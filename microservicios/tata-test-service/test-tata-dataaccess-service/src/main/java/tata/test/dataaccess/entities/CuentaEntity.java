@@ -48,7 +48,7 @@ public class CuentaEntity extends AbstractEntity<Integer, Integer> {
   @Column(name = "saldoInicial", nullable = false)
   @NotNull(message = "Saldo inicial no debe ser nulo")
   @PositiveOrZero(message = "Saldo inicial debe ser positivo o cero")
-  private Integer saldoInicial;
+  private double saldoInicial;
 
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "identificacion", nullable = false)

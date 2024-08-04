@@ -1,6 +1,7 @@
 services:
   tata-servicio:
-    image: docker.io/tata-test/test-tata-container-service:1.0.0-SNAPSHOT
+    image: tata-test/test-tata-service:1.0.0-SNAPSHOT
+    hostname: test-tata-service
     ports:
       - "8180"
     environment:

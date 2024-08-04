@@ -44,12 +44,12 @@ public class MovimientosEntity extends AbstractEntity<Integer, Integer> {
 
   @Column(name = "saldoInicial", nullable = false)
   @NotNull(message = "Saldo inicial no puede ser nulo")
-  private Integer saldoInicial;
+  private double saldoInicial;
 
   @Column(name = "saldoDisponible", nullable = false)
   @NotNull(message = "Saldo disponible no debe ser nulo")
   @PositiveOrZero(message = "Saldo disponible debe ser positivo")
-  private Integer saldoDisponible;
+  private double saldoDisponible;
 
   @NotBlank(message = "{Identificación no debe estar en blanco")
   @Size(max = 25, message = "{Tamaño maximo de 25")
@@ -64,5 +64,5 @@ public class MovimientosEntity extends AbstractEntity<Integer, Integer> {
   @Column(name = "movimiento", nullable = false)
   @NotNull(message = "Movimiento disponible no debe ser nulo")
   @Positive(message = "Movimiento disponible debe ser positivo")
-  private Integer movimiento;
+  private double movimiento;
 }

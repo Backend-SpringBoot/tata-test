@@ -5,7 +5,7 @@ server:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:8061/eureka/
+      defaultZone: http://tata-test-discovery-server:8061/eureka/
 
 logging:
   level:
@@ -22,18 +22,8 @@ spring:
   output:
     ansi:
       enabled: always
-
   cloud:
     gateway:
-      routes:
-        - id: test-tata-service
-          uri: http://localhost:8096
-          predicates:
-            - Path=/TEST-TATA-SERVICE/**
-          filters:
-            - StripPrefix=1
-
-
       discovery:
         locator:
           enabled: true
@@ -68,9 +58,13 @@ spring:
 
 management:
   endpoints:
+    gateway:
+      enabled: true
+    routes:
+      enabled: true
     web:
       exposure:
-        include: 'gateway,routes'
+        include: '*'
   tracing:
     sampling:
       probability: 1.0

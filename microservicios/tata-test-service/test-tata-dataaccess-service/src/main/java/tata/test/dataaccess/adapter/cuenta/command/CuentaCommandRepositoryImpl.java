@@ -33,34 +33,26 @@ public class CuentaCommandRepositoryImpl implements CuentaCommandRepository {
     Optional<CuentaEntity> cuentaOptional;
     Optional<ClienteEntity> clienteOptional;
     ClienteEntity cliente = null;
-
     cuentaOptional = cuentaJpaRepository.findByNumeroCuenta(
         cuentaRequestRecord.numeroCuenta());
-
     clienteOptional = clienteJpaRepository.findByIdentificacion(
         cuentaRequestRecord.cedulaCliente());
     if (clienteOptional.isEmpty()) {
-      ExceptionResponseRecord response = CreateException("Usuario no registrado", null);
-      return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+      CreateException(
+          "Usuario no registrado", null);
     }
-
     cliente = clienteOptional.get();
-
     if (cuentaOptional.isPresent()) {
       entity = updateExistingCuenta(cuentaRequestRecord);
     } else {
-
       entity = CuentaMapper.INSTANCE.requestRecordToEntity(cuentaRequestRecord);
       entity.setCliente(cliente);
-
     }
-
     CuentaResponseRecord saved = CuentaMapper.INSTANCE.entityToResponseRecord(
         cuentaJpaRepository.save(entity));
     assert cliente != null;
-    ExceptionResponseRecord response = CreateException(
-        "Cuenta almacenada para el usuario: " + cliente.getNombre(), saved);
-    return new ResponseEntity<>(response, HttpStatus.OK);
+    return new ResponseEntity<>(CreateException(
+        "Cuenta almacenada para el usuario: " + cliente.getNombre(), saved), HttpStatus.OK);
   }
 
 

@@ -1,14 +1,13 @@
-version: "3.9"
 services:
   # ======================================
   # CONFIG SERVER
   # ======================================
   tata-config-server:
     image: tata.test.config.server/tata-test-config-server:1.0.0-SNAPSHOT
+    hostname: tata-test-config-server
     ports:
       - "8088:8088"
     environment:
-      CJ_EVA_IP_SERVER: "${CJ_EVA_IP_SERVER}"
       LOGGING_LEVEL_ROOT: INFO
     networks:
       - ${GLOBAL_NETWORK:-services}
@@ -17,6 +16,7 @@ services:
   # ======================================
   tata-discovery-server:
     image: tata.test.discovery.server/test-tata-discovery-server:1.0.0
+    hostname: tata-test-discovery-server
     ports:
       - "8061:8061"
     environment:
@@ -28,6 +28,7 @@ services:
   # ======================================
   tata-gateway-server:
     image: tata.test.gateway.server/tata-test-gateway-server:1.0.0
+    hostname: tata-test-gateway-server
     ports:
       - "8060:8060"
     environment:

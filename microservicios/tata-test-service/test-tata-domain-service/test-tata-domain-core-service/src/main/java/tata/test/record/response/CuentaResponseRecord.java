@@ -25,7 +25,7 @@ public record CuentaResponseRecord(
     Integer id,
     String numeroCuenta,
     String tipoCuenta,
-    Integer saldoInicial,
+    double saldoInicial,
     @JsonIgnore String estado,
     @JsonIgnore Integer idPersonaCrea,
     @JsonIgnore LocalDateTime fechaCrea,

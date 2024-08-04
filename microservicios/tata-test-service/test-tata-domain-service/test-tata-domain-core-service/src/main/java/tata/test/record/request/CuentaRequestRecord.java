@@ -23,7 +23,7 @@ public record CuentaRequestRecord(
     Integer id,
     String numeroCuenta,
     String tipoCuenta,
-    Integer saldoInicial,
+    double saldoInicial,
     String estado,
     String cedulaCliente
 ) {

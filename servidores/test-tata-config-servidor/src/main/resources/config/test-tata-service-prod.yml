@@ -80,7 +80,7 @@ problem:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8061/eureka/
+      defaultZone: http://tata-test-discovery-server:8061/eureka/
 logging:
   level:
     root: INFO

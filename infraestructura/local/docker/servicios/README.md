@@ -1,59 +1,86 @@
 # INICIALIZACIÓN DE CONTENEDORES
 
-1. INSCRIPCIÓN
-   Para ejecutar individualmente cada microservicio se debe primero ejecutar el siguiente comando
+## Herramientas usadas
+- Docker desktop
+-  Dockstation 
 
-```bash
-cd /opt/evaluaciones/pro
-sudo chmod +x init_servers.sh
-sudo chmod +x init_microservicio.sh
+## Generar imagen docker
+Para poder generar las imagenes decker primero se debe configurar el **RUN/DEBUG configurations** en el IDE que se esté trabajando primero :
 ```
+mvn clean install
+```
+segundo generar imagen docker:
+```
+mvn package -P generar-imagen-docker
+```
+Con el segundo codigo ejecutado, este generará la imagen y desplegará el nombre del mismo.
+La imagen generada se debe copiar y pegar en la configuraciones de la carpeta  **infraestructura\local\docker\servicios\services or servers**
+dependiendo si la imagen generada es de los servidor o servicios.
 
-Y con eso se ejecutarán los siguientes pasos necesarios para la inicialización del contenedor.
-
-- Obtener el ID del contenedor en ejecución
-- Detener el contenedor
-- Eliminar el contenedor
-- Obtener el ID de la imagen
-- Eliminar la imagen
-- Cambiar al directorio con los archivos de configuración
-- Iniciar el contenedor
-
-Se necesita enviar como parámetro de entrada dos cosas:
-
-1. El nombre del servicio detallado en el archivo semop-servicios.yml
-2. El nombre del tag de la imagen del contenedor almacenada en docker.
-
-Inicialización de los contenedores:
+> **Nota:** De aquí en adelante se debe trabajar en la ruta : **infraestructura\local\docker\servicios**.
 
 ## Servidores
 
-```bash
-   sudo ./init_servers.sh eva-config-server
-sudo ./init_servers.sh eva-discovery-server
-sudo ./init_servers.sh eva-gateway-server
+### subir servidores
+Subir en el orden que esta a continuacíon, ya que el config-server es consumido por el discovery-server para registrar los servicios y el gateway es el punto de entrada para las solicitudes entrantes.
+```
+docker compose -f 0_common.yml -f 1_servers.yml up -d tata-config-server
+```
+```
+docker compose -f 0_common.yml -f 1_servers.yml up -d tata-discovery-server
+```
+```
+docker compose -f 0_common.yml -f 1_servers.yml up -d tata-gateway-server
+```
+### reiniciar servidores
+```
+docker compose -f 0_common.yml -f 1_servers.yml tata-config-server
+```
+```
+docker compose -f 0_common.yml -f 1_servers.yml tata-discovery-server
+```
+```
+docker compose -f 0_common.yml -f 1_servers.yml tata-gateway-server
+```
+### bajar servidores
+```
+docker compose -f 0_common.yml -f 1_servers.yml down
 ```
 
 ## Microservicios
 
-## Generar imagen docker 
-mvn package -P generar-imagen-docker
+### subir servicio
+```
+docker compose -f 0_common.yml -f 2_services.yml up -d tata-servicio
+```
+### reiniciar servicios
+```
+docker compose -f 0_common.yml -f 2_services.yml tata-servicio
+```
+### bajar servicio
+```
+docker compose -f 0_common.yml -f 2_services.yml down
+```
+## Habilitar base de datos
+Sirve para otorgar privilegios a base de datos para que acepte conexiones externas.
+```
+GRANT ALL PRIVILEGES ON *.* TO 'user'@'user' IDENTIFIED BY 'root';
 
--- bajar servidores
-docker compose -f 0_common.yml -f 7_cj_eval-servers.yml down
--- bajar servicios
-docker compose -f 0_common.yml -f 8_cj_eval-services.yml down
--- servidores
-docker compose -f 0_common.yml -f 7_cj_eval-servers.yml up -d eva-config-server
-docker compose -f 0_common.yml -f 7_cj_eval-servers.yml up -d eva-discovery-server
-docker compose -f 0_common.yml -f 7_cj_eval-servers.yml up -d eva-gateway-server
--- Uno a uno
-docker compose -f 0_common.yml -f 8_cj_eval-services.yml up -d eva-ubicacion-servicio
-docker compose -f 0_common.yml -f 8_cj_eval-services.yml up -d eva-catalogo-service
-docker compose -f 0_common.yml -f 8_cj_eval-services.yml up -d sso-authorization-service
-docker compose -f 0_common.yml -f 8_cj_eval-services.yml up -d sso-adm-provider-service
-docker compose -f 0_common.yml -f 8_cj_eval-services.yml up -d eva-personal-service
-docker compose -f 0_common.yml -f 8_cj_eval-services.yml up -d eva-evaluacion-service
-docker compose -f 0_common.yml -f 8_cj_eval-services.yml up -d eva-proceso-service
--- TODOS
-docker compose -f 0_common.yml -f 8_cj_eval-services.yml up 
+FLUSH PRIVILEGES;
+```
+ ## Habilitar Hosts
+ En el caso de que se realice consultas mediante postman, el servidor gateway lance un error de que no reconoce el host al que quiere acceder, se debe realizar lo siguiente : 
+ Ir a la ruta : 
+ ```
+ c:/windows/system32/etc
+ ```
+  y editar el archivo hosts con un editor en modo administrador
+ y añadir lo siguiente al final del archivo :
+  ```
+ # Added by Docker Desktop
+127.0.0.1 tata-test-config-server
+127.0.0.1 PCHQUIT0408LA11.fj.local (host al que permites acceso)
+127.0.0.1 tata-test-discovery-server
+127.0.0.1 tata-test-gateway-server
+127.0.0.1 test-tata-service 
+  ```
