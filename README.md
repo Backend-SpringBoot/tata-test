@@ -63,8 +63,10 @@ docker compose -f 0_common.yml -f 2_services.yml down
 ```
 ## Habilitar base de datos
 Sirve para otorgar privilegios a base de datos para que acepte conexiones externas.
+(user) => usuario bdd
+(ip)=> ip de la la maquina local
 ```
-GRANT ALL PRIVILEGES ON *.* TO 'user'@'user' IDENTIFIED BY 'root';
+GRANT ALL PRIVILEGES ON *.* TO 'user'@'ip' IDENTIFIED BY 'root';
 
 FLUSH PRIVILEGES;
 ```
