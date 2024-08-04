@@ -38,11 +38,12 @@ public class MovimientosCommandRepositoryImpl implements MovimientosCommandRepos
     MovimientosEntity entity;
     ClienteEntity cliente;
     CuentaEntity cuenta;
+    double respSaldo;
 
     entity = MovimientosMapper.INSTANCE.requestRecordToEntity(movimientosRequestRecord);
     cliente = validateCliente(movimientosRequestRecord.cedula());
     cuenta = validateCuenta(movimientosRequestRecord.cedula(),
-        movimientosRequestRecord.numeroCuenta());
+        movimientosRequestRecord.numeroCuenta(), movimientosRequestRecord.tipoCuenta());
 
     if (cliente == null) {
       return new ResponseEntity<>(CreateException("Usuario no registrado", null), HttpStatus.OK);
@@ -52,20 +53,19 @@ public class MovimientosCommandRepositoryImpl implements MovimientosCommandRepos
           "Cuenta no registrada para el usuario" + movimientosRequestRecord.cedula(), null),
           HttpStatus.OK);
     }
-
+    entity.setSaldoInicial(cuenta.getSaldoInicial());
     if (movimientosRequestRecord.tipoMovimiento().equals("Retiro")
         || movimientosRequestRecord.tipoMovimiento().equals("Deposito")) {
-      double resp = calculateSaldoDisponible(movimientosRequestRecord, cuenta,
-          movimientosRequestRecord.cedula());
-      if (resp == 0) {
+      respSaldo = calculateSaldoDisponible(movimientosRequestRecord, cuenta);
+      if (respSaldo == -1) {
         return new ResponseEntity<>(CreateException(
             "No existe saldo suficiente", null),
             HttpStatus.OK);
       }
-      entity.setSaldoInicial(cuenta.getSaldoInicial());
-      entity.setSaldoDisponible(resp);
+      entity.setSaldoDisponible(respSaldo);
       entity.setCiente(cliente.getNombre());
       entity.setFechMovimiento(LocalDateTime.now());
+      entity.setTipoMovimiento(movimientosRequestRecord.tipoMovimiento());
     } else {
       return new ResponseEntity<>(CreateException(
           "Tipo de transacción no sportada", null),
@@ -74,6 +74,7 @@ public class MovimientosCommandRepositoryImpl implements MovimientosCommandRepos
 
     MovimientosResponseRecord saved = MovimientosMapper.INSTANCE.entityToResponseRecord(
         movimientosJpaRepository.save(entity));
+    updateCuenta(respSaldo, cuenta);
     ExceptionResponseRecord response = CreateException(
         "Movimiento registrado exitosamente", saved);
     return new ResponseEntity<>(response, HttpStatus.OK);
@@ -90,34 +91,35 @@ public class MovimientosCommandRepositoryImpl implements MovimientosCommandRepos
     return clienteOptional.orElse(null);
   }
 
-  private CuentaEntity validateCuenta(String cedula, String numeroCuenta) {
+  private CuentaEntity validateCuenta(String cedula, String numeroCuenta, String tipoCuenta) {
     Optional<CuentaEntity> cuentaOptional = cuentaJpaRepository.findCuentaByUsuarioAndNumCuenta(
-        cedula, numeroCuenta);
+        cedula, numeroCuenta, tipoCuenta);
     return cuentaOptional.orElse(null);
   }
 
   private double calculateSaldoDisponible(MovimientosRequestRecord movimientosRequestRecord,
-      CuentaEntity cuenta, String identificacion) {
+      CuentaEntity cuenta) {
     double saldo;
     if (movimientosRequestRecord.tipoMovimiento().equals("Retiro")
         && cuenta.getSaldoInicial() >= movimientosRequestRecord.movimiento()) {
       saldo = cuenta.getSaldoInicial() - movimientosRequestRecord.movimiento();
-      updateCuenta(saldo, cuenta);
       return saldo;
+    } else if (movimientosRequestRecord.tipoMovimiento().equals("Retiro")
+        && cuenta.getSaldoInicial() <= movimientosRequestRecord.movimiento()) {
+      return -1;
     } else if (movimientosRequestRecord.tipoMovimiento().equals("Deposito")) {
       saldo = cuenta.getSaldoInicial() + movimientosRequestRecord.movimiento();
-      updateCuenta(saldo, cuenta);
       return saldo;
     } else {
       return 0;
     }
   }
 
-  private void updateCuenta(double saldo, CuentaEntity cuenta) {
+  private void updateCuenta(double respSaldo, CuentaEntity cuenta) {
     cuentaCommandRepository.createOrUpdate(CuentaRequestRecord.builder()
         .numeroCuenta(cuenta.getNumeroCuenta())
         .tipoCuenta(cuenta.getTipoCuenta())
-        .saldoInicial(saldo)
+        .saldoInicial(respSaldo)
         .estado(cuenta.getEstado())
         .cedulaCliente(cuenta.getCliente().getIdentificacion())
         .build());

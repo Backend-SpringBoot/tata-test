@@ -30,6 +30,7 @@ public record MovimientosResponseRecord(
     String cliente,
     String numeroCuenta,
     double movimiento,
+    String tipoMovimiento,
     @JsonIgnore String estado,
     @JsonIgnore Integer idPersonaCrea,
     @JsonIgnore LocalDateTime fechaCrea,

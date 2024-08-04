@@ -65,4 +65,8 @@ public class MovimientosEntity extends AbstractEntity<Integer, Integer> {
   @NotNull(message = "Movimiento disponible no debe ser nulo")
   @Positive(message = "Movimiento disponible debe ser positivo")
   private double movimiento;
+
+  @NotBlank(message = "{Tipo movimiento no debe estar en blanco")
+  @Size(max = 25, message = "{Tamaño maximo de 25 ")
+  private String tipoMovimiento;
 }

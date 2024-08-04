@@ -1,5 +1,7 @@
 package tata.test.dataaccess.adapter.cuenta.command;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.locks.StampedLock;
 import lombok.RequiredArgsConstructor;
@@ -32,14 +34,19 @@ public class CuentaCommandRepositoryImpl implements CuentaCommandRepository {
     CuentaEntity entity;
     Optional<CuentaEntity> cuentaOptional;
     Optional<ClienteEntity> clienteOptional;
-    ClienteEntity cliente = null;
+    ClienteEntity cliente;
+    final List<String> TIPO_TRANSACCIONES = Arrays.asList("Ahorros", "Corriente");
+    if (!isValidTransactionType(TIPO_TRANSACCIONES, cuentaRequestRecord.tipoCuenta())) {
+      return new ResponseEntity<>(CreateException(
+          "Tipo de transacción no sportada", null), HttpStatus.OK);
+    }
     cuentaOptional = cuentaJpaRepository.findByNumeroCuenta(
         cuentaRequestRecord.numeroCuenta());
     clienteOptional = clienteJpaRepository.findByIdentificacion(
         cuentaRequestRecord.cedulaCliente());
     if (clienteOptional.isEmpty()) {
-      CreateException(
-          "Usuario no registrado", null);
+      return new ResponseEntity<>(CreateException(
+          "Usuario no registrado", null), null);
     }
     cliente = clienteOptional.get();
     if (cuentaOptional.isPresent()) {
@@ -98,5 +105,9 @@ public class CuentaCommandRepositoryImpl implements CuentaCommandRepository {
       lock.unlockWrite(stamp);
     }
     return existingEntity;
+  }
+
+  public boolean isValidTransactionType(List<String> TIPO_TRANSACCIONES, String tipoCuenta) {
+    return TIPO_TRANSACCIONES.contains(tipoCuenta);
   }
 }

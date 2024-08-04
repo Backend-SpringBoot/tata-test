@@ -18,8 +18,9 @@ public interface CuentaJpaRepository extends JpaRepository<CuentaEntity, Integer
 
   @Query("SELECT c FROM CuentaEntity c "
       + "JOIN c.cliente p WHERE p.identificacion = :identificacion "
-      + "AND c.numeroCuenta = :numeroCuenta  ")
+      + "AND c.numeroCuenta = :numeroCuenta  "
+      + "AND c.tipoCuenta = :tipoCuenta")
   Optional<CuentaEntity> findCuentaByUsuarioAndNumCuenta(String identificacion,
-      String numeroCuenta);
-
+      String numeroCuenta, String tipoCuenta);
+  
 }
