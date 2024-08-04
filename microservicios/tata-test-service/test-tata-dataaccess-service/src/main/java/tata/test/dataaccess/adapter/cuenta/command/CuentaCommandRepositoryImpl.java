@@ -31,7 +31,7 @@ public class CuentaCommandRepositoryImpl implements CuentaCommandRepository {
   @Transactional
   public ResponseEntity<ExceptionResponseRecord> createOrUpdate(
       CuentaRequestRecord cuentaRequestRecord) {
-    
+
     if (!isValidTransactionType(getSupportedTransactionTypes(), cuentaRequestRecord.tipoCuenta())) {
       return createErrorResponse("Tipo de transacción no soportada");
     }
@@ -54,18 +54,15 @@ public class CuentaCommandRepositoryImpl implements CuentaCommandRepository {
   @Override
   @Transactional
   public ResponseEntity<ExceptionResponseRecord> delete(Integer id) {
-    Optional<CuentaEntity> cuentaOptional = cuentaJpaRepository.findById(id);
-    if (cuentaOptional.isEmpty()) {
-      ExceptionResponseRecord response = CreateException(
-          "No se encontró ningún registro", null);
-      return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-    cuentaJpaRepository.deleteById(id);
-    CuentaEntity cuenta = cuentaOptional.get();
-    ExceptionResponseRecord response = CreateException(
-        "Cuenta de : " + cuenta.getTipoCuenta() + " eliminada",
+    return cuentaJpaRepository.findById(id)
+        .map(this::deleteCuenta)
+        .orElseGet(() -> createErrorResponse("No se encontró ningún registro"));
+  }
+
+  private ResponseEntity<ExceptionResponseRecord> deleteCuenta(CuentaEntity cuenta) {
+    cuentaJpaRepository.deleteById(cuenta.getId());
+    return createSuccessResponse("Cuenta : " + cuenta.getTipoCuenta() + " eliminada",
         CuentaMapper.INSTANCE.entityToResponseRecord(cuenta));
-    return new ResponseEntity<>(response, HttpStatus.OK);
   }
 
   private ExceptionResponseRecord CreateException(String message, Object o) {
