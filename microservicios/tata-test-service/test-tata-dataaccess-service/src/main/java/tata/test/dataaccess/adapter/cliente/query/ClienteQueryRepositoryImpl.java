@@ -1,7 +1,6 @@
 package tata.test.dataaccess.adapter.cliente.query;
 
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,24 +22,14 @@ public class ClienteQueryRepositoryImpl implements ClienteQueryRepository {
 
   @Override
   public ResponseEntity<ExceptionResponseRecord> getClient(String id) {
-    Optional<ClienteEntity> clienteoptional =
-        clienteJpaRepository
-            .findByIdentificacion(id);
-    if (clienteoptional.isEmpty()) {
-      return new ResponseEntity<>(CreateException("No existe registros", null), HttpStatus.OK);
-
-    }
-    ClienteEntity cliente = clienteoptional.get();
-    ClienteResponseRecord data = ClienteMapper.INSTANCE.entityToResponseRecord(cliente);
-    return new ResponseEntity<>(CreateException("Correcto !", data), HttpStatus.OK);
+    return clienteJpaRepository.findByIdentificacion(id)
+        .map(this::getClienteResponse)
+        .orElseGet(() -> createErrorResponse("No se encontró ningún registro"));
   }
 
   @Override
   public ResponseEntity<List<ExceptionResponseRecord>> getCliets() {
-    List<ClienteEntity> clienteEntities =
-        clienteJpaRepository
-            .findAll();
-
+    List<ClienteEntity> clienteEntities = clienteJpaRepository.findAll();
     List<ClienteResponseRecord> data = ClienteMapper.INSTANCE.entitiesToResponseRecords(
         clienteEntities);
     return new ResponseEntity<>(List.of(CreateException("Correcto", data)), HttpStatus.OK);
@@ -52,5 +41,19 @@ public class ClienteQueryRepositoryImpl implements ClienteQueryRepository {
         .message(message)
         .data(o)
         .build();
+  }
+
+  private ResponseEntity<ExceptionResponseRecord> getClienteResponse(ClienteEntity cliente) {
+    ClienteResponseRecord data = ClienteMapper.INSTANCE.entityToResponseRecord(cliente);
+    return createSuccessResponse("Correcto!", data);
+  }
+
+  private ResponseEntity<ExceptionResponseRecord> createErrorResponse(String message) {
+    return new ResponseEntity<>(CreateException(message, null), HttpStatus.OK);
+  }
+
+  private ResponseEntity<ExceptionResponseRecord> createSuccessResponse(String message,
+      ClienteResponseRecord data) {
+    return new ResponseEntity<>(CreateException(message, data), HttpStatus.OK);
   }
 }

@@ -27,51 +27,33 @@ public class ClienteCommandRepositoryImpl implements ClienteCommandRepository {
   @Transactional
   public ResponseEntity<ExceptionResponseRecord> createOrUpdate(
       ClienteRequestRecord clienteRequestRecord) {
-    ClienteEntity entity;
-    if (clienteRequestRecord.id() != null) {
-      entity = updateExistingCliente(clienteRequestRecord);
-    } else {
-      entity = ClienteMapper.INSTANCE.requestRecordToEntity(clienteRequestRecord);
-      Optional<ClienteEntity> clienteOptional = clienteJpaRepository.findByIdentificacion(
-          clienteRequestRecord.identificacion());
 
-      if (clienteOptional.isPresent()) {
-        ExceptionResponseRecord response = CreateException(
-            "Cliente con cédula :" + clienteRequestRecord.identificacion() + " ya registrado",
-            null);
-        return new ResponseEntity<>(response, HttpStatus.OK);
-      }
-    }
+    ClienteEntity entity = getClienteEntity(clienteRequestRecord);
     ClienteResponseRecord saved = ClienteMapper.INSTANCE.entityToResponseRecord(
         clienteJpaRepository.save(entity));
-    ExceptionResponseRecord response = CreateException(
-        "Cliente registrado exitosamente !", saved);
-    return new ResponseEntity<>(response, HttpStatus.OK);
+    return createSuccessResponse(
+        "Cuenta almacenada para el usuario: " + clienteRequestRecord.nombre(),
+        saved);
   }
 
   @Override
   @Transactional
   public ResponseEntity<ExceptionResponseRecord> delete(String identificacion) {
-    Optional<ClienteEntity> clienteOptional = clienteJpaRepository.findByIdentificacion(
-        identificacion);
-    if (clienteOptional.isEmpty()) {
-      ExceptionResponseRecord response = CreateException(
-          "No se encontró ningún registro", null);
-      return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-    ClienteEntity cliente = clienteOptional.get();
-    clienteJpaRepository.deleteByIdentificacion(cliente.getIdentificacion());
-    ExceptionResponseRecord response = CreateException(
-        "Cleinte : " + cliente.getNombre() + " eliminad@",
-        ClienteMapper.INSTANCE.entityToResponseRecord(cliente));
-    return new ResponseEntity<>(response, HttpStatus.OK);
+    return clienteJpaRepository.findByIdentificacion(identificacion)
+        .map(this::deleteCliente)
+        .orElseGet(() -> createErrorResponse("No se encontró ningún registro"));
+  }
 
+  private ResponseEntity<ExceptionResponseRecord> deleteCliente(ClienteEntity cliente) {
+    clienteJpaRepository.deleteByIdentificacion(cliente.getIdentificacion());
+    return createSuccessResponse("Cliente : " + cliente.getNombre() + " eliminad@",
+        ClienteMapper.INSTANCE.entityToResponseRecord(cliente));
   }
 
   private ClienteEntity updateExistingCliente(ClienteRequestRecord requestRecord) {
     ClienteEntity existingEntity =
         clienteJpaRepository
-            .findById(requestRecord.id())
+            .findByIdentificacion(requestRecord.identificacion())
             .orElseThrow(() -> new ClienteException("Cliente no encontrado"));
 
     final StampedLock lock = existingEntity.getLock();
@@ -92,5 +74,25 @@ public class ClienteCommandRepositoryImpl implements ClienteCommandRepository {
         .message(message)
         .data(o)
         .build();
+  }
+
+  private ResponseEntity<ExceptionResponseRecord> createSuccessResponse(String message,
+      ClienteResponseRecord saved) {
+    return new ResponseEntity<>(CreateException(message, saved), HttpStatus.OK);
+  }
+
+  private ClienteEntity getClienteEntity(ClienteRequestRecord clienteRequestRecord) {
+    Optional<ClienteEntity> clienteOptional = clienteJpaRepository.findByIdentificacion(
+        clienteRequestRecord.identificacion());
+    return clienteOptional.isPresent() ? updateExistingCliente(clienteRequestRecord)
+        : createNewCliente(clienteRequestRecord);
+  }
+
+  private ClienteEntity createNewCliente(ClienteRequestRecord clienteRequestRecord) {
+    return ClienteMapper.INSTANCE.requestRecordToEntity(clienteRequestRecord);
+  }
+
+  private ResponseEntity<ExceptionResponseRecord> createErrorResponse(String message) {
+    return new ResponseEntity<>(CreateException(message, null), HttpStatus.OK);
   }
 }
