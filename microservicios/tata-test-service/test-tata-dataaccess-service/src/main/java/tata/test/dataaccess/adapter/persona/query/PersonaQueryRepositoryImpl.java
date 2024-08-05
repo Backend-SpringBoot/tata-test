@@ -1,7 +1,6 @@
 package tata.test.dataaccess.adapter.persona.query;
 
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,22 +22,14 @@ public class PersonaQueryRepositoryImpl implements PersonaQueryRepository {
 
   @Override
   public ResponseEntity<ExceptionResponseRecord> getUser(String id) {
-    Optional<PersonaEntity> personaOptional =
-        personaJpaRepository
-            .findByIdentificacion(id);
-    if (personaOptional.isEmpty()) {
-      return new ResponseEntity<>(CreateException("No existe registros", null), HttpStatus.OK);
-    }
-    PersonaEntity persona = personaOptional.get();
-    PersonaResponseRecord data = PersonaMapper.INSTANCE.entityToResponseRecord(persona);
-    return new ResponseEntity<>(CreateException("Correcto !", data), HttpStatus.OK);
+    return personaJpaRepository.findByIdentificacion(id)
+        .map(this::getPersonaResponse)
+        .orElseGet(() -> createErrorResponse("No se encontró ningún registro"));
   }
 
   @Override
   public ResponseEntity<List<ExceptionResponseRecord>> getUsers() {
-    List<PersonaEntity> personaEntities =
-        personaJpaRepository
-            .findAll();
+    List<PersonaEntity> personaEntities = personaJpaRepository.findAll();
     List<PersonaResponseRecord> data = PersonaMapper.INSTANCE.entitiesToResponseRecords(
         personaEntities);
     return new ResponseEntity<>(List.of(CreateException("Correcto", data)), HttpStatus.OK);
@@ -50,5 +41,19 @@ public class PersonaQueryRepositoryImpl implements PersonaQueryRepository {
         .message(message)
         .data(o)
         .build();
+  }
+
+  private ResponseEntity<ExceptionResponseRecord> createErrorResponse(String message) {
+    return new ResponseEntity<>(CreateException(message, null), HttpStatus.OK);
+  }
+
+  private ResponseEntity<ExceptionResponseRecord> getPersonaResponse(PersonaEntity persona) {
+    PersonaResponseRecord data = PersonaMapper.INSTANCE.entityToResponseRecord(persona);
+    return createSuccessResponse("Correcto!", data);
+  }
+
+  private ResponseEntity<ExceptionResponseRecord> createSuccessResponse(String message,
+      PersonaResponseRecord data) {
+    return new ResponseEntity<>(CreateException(message, data), HttpStatus.OK);
   }
 }
